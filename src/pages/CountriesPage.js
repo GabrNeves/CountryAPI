@@ -1,4 +1,6 @@
 import * as React from "react";
+import useCountries from "../custom-hooks/useCountries";
+
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,7 +9,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import useCountries from "../custom-hooks/useCountries";
+import Avatar from '@mui/material/Avatar';
+import CircularProgress from '@mui/material/CircularProgress';
+
 // import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 const columns = [
@@ -41,6 +45,7 @@ const columns = [
 ];
 
 export default function CountriesPage() {
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -58,7 +63,7 @@ export default function CountriesPage() {
   );
 
   if (error) return <div>Error!</div>;
-  if (loading) return <h1>Loading...</h1>;
+  if (loading) return <CircularProgress disableShrink />
   return (
     <div>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -91,20 +96,23 @@ export default function CountriesPage() {
                       >
                         {columns.map((column) => {
                           let value;
-                          if (column.id === "name") {
-                            value = row.name.common;
-                          } else if (column.id === "flag") {
-                            value = row.flags.png;
-                          } else if (column.id === "languages") {
-                            value = row.languages;
-                          } else if (
-                            column.id === "region" ||
-                            column.id === "capital" ||
-                            column.id === "population"
-                          ) {
-                            value = row[column.id] || "NO DATA";
-                          } else {
-                            value = null;
+                          switch (column.id) {
+                            case "name":
+                              value = row.name.common;
+                              break;
+                            case "flag":
+                              value = row.flags.png;
+                              break;
+                            case "languages":
+                              value = row.languages;
+                              break;
+                            case "region":
+                            case "capital":
+                            case "population":
+                              value = row[column.id] || "NO DATA";
+                              break;
+                            default:
+                              value = null;
                           }
 
                           return value ? (
@@ -114,11 +122,13 @@ export default function CountriesPage() {
                                   return <p key={key}>{value[key]}</p>;
                                 })
                               ) : column.id === "flag" ? (
-                                <img
-                                  heigth="35px"
-                                  width="35px"
+                                <Avatar
+                                  heigth="40px"
+                                  width="40px"
+                                  justifycontent="center"
                                   src={value}
-                                  alt="flag"
+                                  alt="country flag"
+                                  sx={{ margin: "auto" }}
                                 />
                               ) : (
                                 <p>{value}</p>
