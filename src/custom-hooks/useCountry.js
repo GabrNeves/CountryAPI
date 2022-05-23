@@ -1,9 +1,7 @@
 // This hook is used to fetch one specific country
-
-// NOT SURE WHY THIS EXTRA HOOK
 import {useEffect, useState} from 'react'
 
-export default function useCountries(url) {
+export default function useCountry(name) {
     const [countryData, setCountryData] = useState();
     const [error, setError] = useState();
     const [loading, setLoading] = useState(true);
@@ -11,7 +9,7 @@ export default function useCountries(url) {
     useEffect(() => {
         const fetchData = async function () {
             try {
-                const response = await fetch(url)
+                const response = await fetch(`https://restcountries.com/v3.1/name/${name}`)
                 let data = await response.json();
                 setCountryData(data)
             } catch (err) {
@@ -21,6 +19,6 @@ export default function useCountries(url) {
             }
         }
         fetchData();
-    }, [url])
+    }, [name])
     return {countryData, error, loading}
 }
