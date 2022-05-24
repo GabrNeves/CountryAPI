@@ -1,8 +1,5 @@
 import React from "react";
-import { useState } from 'react';
-
-import useCountries from "../custom-hooks/useCountries";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,49 +7,22 @@ import TableRow from "@mui/material/TableRow";
 import Avatar from "@mui/material/Avatar";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const columns = [
-  {
-    id: "flag",
-    label: "Flag",
-    minWidth: 170,
-    align: "center",
-  },
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "region", label: "Region", minWidth: 100 },
-  {
-    id: "population",
-    label: "Population",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "languages",
-    label: "Languages",
-    minWidth: 170,
-    align: "right",
-  },
-  {
-    id: "capital",
-    label: "capital",
-    minWidth: 170,
-    align: "right",
-  },
-];
-
-export default function CountryTableBody() {
-  const [keyword, setKeyword] = useState('');
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const { countryData, error, loading } = useCountries(
-    "https://restcountries.com/v3.1/all"
-  );  
-
-  const countrySearch = countryData?.filter((ctry) => ctry.name.common.toLowerCase().includes(keyword))
-
+export default function CountryTableBody({
+  columns,
+  countrySearch,
+  error,
+  loading,
+  page,
+  rowsPerPage,
+}) {
   if (error) return <div>Error!</div>;
-  if (loading) return <CircularProgress disableShrink />;
+  if (loading)
+    return (
+      <CircularProgress
+        disableShrink
+        sx={{ position: "absolute", left: "50vw", top: "50vh" }}
+      />
+    );
 
   return (
     <TableBody>

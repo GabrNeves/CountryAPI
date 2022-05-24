@@ -16,10 +16,16 @@ export default function CountriesPage({ country }) {
   const { countryData, error, loading } = useCountry(name);
 
   if (error) return <div>Error!</div>;
-  if (loading) return <CircularProgress disableShrink />;
+  if (loading)
+    return (
+      <CircularProgress
+        disableShrink
+        sx={{ position: "absolute", left: "50vw", top: "50vh" }}
+      />
+    );
   return (
     <div>
-      <h1>{name}</h1>
+      <h1 style={{ marginTop: "7rem" }}>{name}</h1>
       {countryData ? (
         countryData.map((country) => {
           return (
@@ -52,29 +58,38 @@ export default function CountriesPage({ country }) {
                 <Typography gutterBottom variant="h5" component="div">
                   Currencies
                 </Typography>
-                {country.currencies && Object.keys(country.currencies).map((key) => {
-                      return (
-                        <Typography variant="body2" color="text.secondary" key={country.cca3 + key}>
-                            {country.currencies[key].name}
-                        </Typography>    
-                      )
+                {country.currencies &&
+                  Object.keys(country.currencies).map((key) => {
+                    return (
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        key={country.cca3 + key}
+                      >
+                        {country.currencies[key].name}
+                      </Typography>
+                    );
                   })}
                 <Typography gutterBottom variant="h5" component="div">
                   Languages
                 </Typography>
-                
-                  {country.languages && Object.keys(country.languages).map((key) => {
-                      return (
-                        <Typography variant="body2" color="text.secondary" key={country.cca3 + key}>
-                            {country.languages[key]}
-                        </Typography>    
-                      )
+
+                {country.languages &&
+                  Object.keys(country.languages).map((key) => {
+                    return (
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        key={country.cca3 + key}
+                      >
+                        {country.languages[key]}
+                      </Typography>
+                    );
                   })}
-                
               </CardContent>
-              <CardActions sx={{justifyContent: "center"}}>
+              <CardActions sx={{ justifyContent: "center" }}>
                 <Button size="small">
-                  <Link to="/" >Back</Link>
+                  <Link to="/">Back</Link>
                 </Button>
               </CardActions>
             </Card>
