@@ -6,6 +6,10 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Avatar from "@mui/material/Avatar";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useDispatch } from "react-redux";
+import { addFavorite } from "../redux/action";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import IconButton from '@mui/material/IconButton';
 
 export default function CountryTableBody({
   columns,
@@ -15,15 +19,18 @@ export default function CountryTableBody({
   page,
   rowsPerPage,
 }) {
+  const dispatch = useDispatch();
+  const handleAddFavorite = (favorite) => {
+    dispatch(addFavorite(favorite));
+  };
   if (error) return <div>Error!</div>;
-  if (loading)
+  if (loading) {
     return (
       <CircularProgress
         disableShrink
         sx={{ position: "absolute", left: "50vw", top: "50vh" }}
       />
-    );
-
+    )};
   return (
     <TableBody>
       {countrySearch &&
@@ -83,6 +90,9 @@ export default function CountryTableBody({
                     <></>
                   );
                 })}
+                <TableCell>
+                  <IconButton sx={{background: 'transparent', border: 'none'}} onClick={() => handleAddFavorite(row)}><FavoriteIcon/></IconButton>
+                </TableCell>
               </TableRow>
             );
           })}
