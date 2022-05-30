@@ -3,18 +3,29 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import CountriesPage from "./pages/CountriesPage";
 import CountryPage from "./pages/CountryPage";
+import FavoritePage from "./pages/FavoritePage";
 import Nav from './components/Nav'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+});
 
 // export const AppContext = createContext()
 
 function App() {
   return (
       <div className="App">
-        <Nav />
-        <Routes>
-          <Route path="/" element={<CountriesPage />} />
-          <Route path="/country/:name" element={<CountryPage />} />
-        </Routes>
+        <ThemeProvider theme={theme}>
+          <Nav />
+          <Routes>
+            <Route path="/" element={<CountriesPage />} />
+            <Route path="/country/:name" element={<CountryPage />} />
+            <Route path='/favorites' element={<FavoritePage />}/>
+          </Routes>
+        </ThemeProvider>
       </div>
   );
 }

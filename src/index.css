@@ -12,10 +12,10 @@ code {
     monospace;
 }
 
-a > p {
+a {
   margin: 0;
   padding: 0;
-  color: black;
+  color: currentColor;
   text-decoration: none;
 }
 

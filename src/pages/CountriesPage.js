@@ -63,9 +63,9 @@ export default function CountriesPage() {
   //   "https://restcountries.com/v3.1/all"
   // );
 
-  const countryData = useSelector((appState) => appState.countriesData)
-  const loading = useSelector((appState) => appState.loading)
-  const error = useSelector((appState) => appState.error)
+  const countryData = useSelector((appState) => appState.dataReducer.countriesData)
+  const loading = useSelector((appState) => appState.dataReducer.loading)
+  const error = useSelector((appState) => appState.dataReducer.error)
 
   const handleSearch = (e) => {
     setKeyword(e.target.value);
@@ -89,10 +89,8 @@ export default function CountriesPage() {
     );
   return (
     <div>
-      {/* <Nav/> */}
       <input placeholder="Search country..." onChange={handleSearch}></input>
-      <button>Favorite</button>
-      <Paper sx={{ width: "90%", overflow: "hidden" }}>
+      <Paper sx={{ width: "90%", overflow: "hidden", margin:'5rem auto 0 auto' }}>
         <TableContainer sx={{ maxHeight: '60vh' }}>
           <Table stickyHeader aria-label="sticky table">
             <CountryTableHead columns={ columns } />

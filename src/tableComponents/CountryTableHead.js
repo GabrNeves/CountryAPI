@@ -2,11 +2,11 @@ import React from "react";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
+import TableSortLabel from "@mui/material/TableSortLabel";
 
-
-export default function CountryTableHead({columns}) {
+export default function CountryTableHead({ columns }) {
   return (
-    <TableHead>
+    <TableHead sx={{ backgroudColor: "black" }}>
       <TableRow>
         {columns.map((column) => (
           <TableCell
@@ -14,10 +14,14 @@ export default function CountryTableHead({columns}) {
             align={column.align}
             style={{ minWidth: column.minWidth }}
           >
-            {column.label}
+            <TableSortLabel>
+              {column.label}
+            </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell ></TableCell>
+        <TableCell>
+          <TableSortLabel></TableSortLabel>
+        </TableCell>
       </TableRow>
     </TableHead>
   );

@@ -6,10 +6,12 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Avatar from "@mui/material/Avatar";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useDispatch } from "react-redux";
-import { addFavorite } from "../redux/action";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, removeFavorite } from "../redux/action";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import IconButton from '@mui/material/IconButton';
+import { useSelect } from "@mui/base";
 
 export default function CountryTableBody({
   columns,
@@ -23,6 +25,13 @@ export default function CountryTableBody({
   const handleAddFavorite = (favorite) => {
     dispatch(addFavorite(favorite));
   };
+  const handleRemoveFavorite = (favorite) => {
+    dispatch(removeFavorite(favorite))
+  }
+  const favoriteCart = useSelector((appState) => appState.favoriteReducer.favoriteCart)
+
+
+
   if (error) return <div>Error!</div>;
   if (loading) {
     return (
@@ -91,7 +100,11 @@ export default function CountryTableBody({
                   );
                 })}
                 <TableCell>
-                  <IconButton sx={{background: 'transparent', border: 'none'}} onClick={() => handleAddFavorite(row)}><FavoriteIcon/></IconButton>
+                  {
+                  
+                  (favoriteCart.indexOf(row) >= 0) ?
+                  <IconButton sx={{background: 'transparent', border: 'none'}} onClick={() => favoriteCart.indexOf(row) >= 0 ? handleRemoveFavorite(row) : handleAddFavorite(row)}><FavoriteIcon sx={{color: '#C51104'}}/></IconButton> : <IconButton sx={{background: 'transparent', border: 'none'}} onClick={() => handleAddFavorite(row)}><FavoriteBorderIcon/></IconButton>
+                  }
                 </TableCell>
               </TableRow>
             );

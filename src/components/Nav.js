@@ -9,9 +9,11 @@ import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useState } from "react";
 import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -54,13 +56,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
-  //search code hear
   const [keyword, setKeyword] = useState("");
   const handleSearch = (e) => {
     setKeyword(e.target.value);
   };
-  const countryData = useSelector((appState) => appState.countriesData)
-  const favoriteCart = useSelector((appState) => appState.favoriteCart)
+  const countryData = useSelector((appState) => appState.dataReducer.countriesData)
+  const favoriteCart = useSelector((appState) => appState.favoriteReducer.favoriteCart)
   const countrySearch = countryData?.filter((ctry) =>
   ctry.name.common.toLowerCase().includes(keyword)
 );
@@ -87,15 +88,20 @@ export default function PrimarySearchAppBar() {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: "none", md: "flex" }, marginRight: '4rem' }}>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={favoriteCart.map((products) => products).length} color="error">
-                <FavoriteIcon />
-              </Badge>
+              <Link to="/favorites" >
+                {(favoriteCart.map((products) => products).length === 0) ? <Badge badgeContent={favoriteCart.map((products) => products).length} color="error">
+                  <FavoriteBorderIcon />
+                </Badge> : <Badge badgeContent={favoriteCart.map((products) => products).length} color="error">
+                  <FavoriteIcon />
+                </Badge> }
+                
+              </Link>
             </IconButton>
           </Box>
         </Toolbar>

@@ -11,9 +11,30 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
+import ListSubheader from "@mui/material/ListSubheader";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Collapse from "@mui/material/Collapse";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import StarBorder from "@mui/icons-material/StarBorder";
+import BadgeIcon from "@mui/icons-material/Badge";
+import LanguageIcon from "@mui/icons-material/Language";
+import BorderBottomIcon from "@mui/icons-material/BorderBottom";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import TranslateIcon from "@mui/icons-material/Translate";
+
 export default function CountriesPage({ country }) {
   const { name } = useParams();
   const { countryData, error, loading } = useCountry(name);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
   if (error) return <div>Error!</div>;
   if (loading)
@@ -29,70 +50,150 @@ export default function CountriesPage({ country }) {
       {countryData ? (
         countryData.map((country) => {
           return (
-            <Card sx={{ maxWidth: 345, margin: "auto" }}>
-              <CardMedia
-                component="img"
-                height="140"
-                image={country.flags.png}
-                alt={country.name.common + " flag"}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Other Names
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {country.name.common}
-                </Typography>
-                <Typography gutterBottom variant="h5" component="div">
-                  Region
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {country.region}
-                </Typography>
-                <Typography gutterBottom variant="h5" component="div">
-                  Borders
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {country.borders}
-                </Typography>
-                <Typography gutterBottom variant="h5" component="div">
-                  Currencies
-                </Typography>
-                {country.currencies &&
-                  Object.keys(country.currencies).map((key) => {
-                    return (
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        key={country.cca3 + key}
-                      >
-                        {country.currencies[key].name}
-                      </Typography>
-                    );
-                  })}
-                <Typography gutterBottom variant="h5" component="div">
-                  Languages
-                </Typography>
-
-                {country.languages &&
-                  Object.keys(country.languages).map((key) => {
-                    return (
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        key={country.cca3 + key}
-                      >
-                        {country.languages[key]}
-                      </Typography>
-                    );
-                  })}
-              </CardContent>
-              <CardActions sx={{ justifyContent: "center" }}>
-                <Button size="small">
-                  <Link to="/">Back</Link>
+            <div>
+              <Card sx={{ maxWidth: 345, margin: "auto" }}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={country.flags.png}
+                  alt={country.name.common + " flag"}
+                />
+                <CardContent>
+                  <List
+                    sx={{
+                      width: "100%",
+                      maxWidth: 360,
+                      bgcolor: "background.paper",
+                    }}
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                  >
+                    <ListItemButton onClick={handleClick}>
+                      <ListItemIcon>
+                        <BadgeIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Other Names" />
+                      {open ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                      <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemIcon>
+                            <StarBorder />
+                          </ListItemIcon>
+                          <ListItemText primary={country.name.common} />
+                        </ListItemButton>
+                      </List>
+                    </Collapse>
+                    <ListItemButton onClick={handleClick}>
+                      <ListItemIcon>
+                        <LanguageIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Region" />
+                      {open ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                      <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemIcon>
+                            <StarBorder />
+                          </ListItemIcon>
+                          <ListItemText primary={country.region} />
+                        </ListItemButton>
+                      </List>
+                    </Collapse>
+                    <ListItemButton onClick={handleClick}>
+                      <ListItemIcon>
+                        <BorderBottomIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Borders" />
+                      {open ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                      <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemIcon>
+                            <StarBorder />
+                          </ListItemIcon>
+                          <ListItemText primary={country.borders} />
+                        </ListItemButton>
+                      </List>
+                    </Collapse>
+                    <ListItemButton onClick={handleClick}>
+                      <ListItemIcon>
+                        <CurrencyExchangeIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Currencies" />
+                      {open ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                      <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemIcon>
+                            <StarBorder />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              country.currencies &&
+                              Object.keys(country.currencies).map((key) => {
+                                return (
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    key={country.cca3 + key}
+                                  >
+                                    {country.currencies[key].name}
+                                  </Typography>
+                                );
+                              })
+                            }
+                          />
+                        </ListItemButton>
+                      </List>
+                    </Collapse>
+                    <ListItemButton onClick={handleClick}>
+                      <ListItemIcon>
+                        <TranslateIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Languages" />
+                      {open ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                      <List component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemIcon>
+                            <StarBorder />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              country.languages &&
+                              Object.keys(country.languages).map((key) => {
+                                return (
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    key={country.cca3 + key}
+                                  >
+                                    {country.languages[key]}
+                                  </Typography>
+                                );
+                              })
+                            }
+                          />
+                        </ListItemButton>
+                      </List>
+                    </Collapse>
+                  </List>
+                  ); 
+                </CardContent>
+                <CardActions sx={{ justifyContent: "center" }}></CardActions>
+              </Card>
+              <Link to="/">
+                <Button variant="contained" sx={{ marginTop: "2rem" }}>
+                  Back
                 </Button>
-              </CardActions>
-            </Card>
+              </Link>
+            </div>
           );
         })
       ) : (
