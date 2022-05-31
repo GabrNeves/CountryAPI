@@ -72,7 +72,7 @@ export default function CountriesPage() {
   };
 
   const countrySearch = countryData?.filter((ctry) =>
-    ctry.name.common.toLowerCase().includes(keyword)
+    ctry.name.common.toLowerCase().includes(keyword) || ctry.region.toLowerCase().includes(keyword)
   );
 
   useEffect(()=> {

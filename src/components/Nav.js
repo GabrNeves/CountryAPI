@@ -13,6 +13,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useState } from "react";
 import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 
 const Search = styled("div")(({ theme }) => ({
@@ -55,8 +56,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+// const themeToggleHandler = ({theme}) => {
+//   console.log(theme.palette)
+//     // thm.mode === 'dark' ? thm.mode = 'light' : thm.mode = 'dark
+// }
+
+export default function PrimarySearchAppBar({ theme, themeToggleHandler }) {
   const [keyword, setKeyword] = useState("");
+
   const handleSearch = (e) => {
     setKeyword(e.target.value);
   };
@@ -66,8 +73,11 @@ export default function PrimarySearchAppBar() {
   ctry.name.common.toLowerCase().includes(keyword)
 );
 
+  
+
   return (
     <Box sx={{ flexGrow: 1 }}>
+      {/* {console.log(theme.palette.mode)} */}
       <AppBar position="static">
         <Toolbar>
           <Typography
@@ -85,10 +95,18 @@ export default function PrimarySearchAppBar() {
             <StyledInputBase
               placeholder={'Search country...'}
               inputProps={{ "aria-label": "search" }}
+              onChange={handleSearch}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" }, marginRight: '4rem' }}>
+            <IconButton
+            aria-label='dark mode'
+            color='inherit'
+            // onClick={() => {theme.palette.mode === 'light' ? theme.palette.mode = 'dark' : theme.palette.mode = 'light'}}
+            >
+              <DarkModeIcon />
+            </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"

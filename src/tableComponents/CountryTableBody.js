@@ -11,7 +11,7 @@ import { addFavorite, removeFavorite } from "../redux/action";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import IconButton from '@mui/material/IconButton';
-import { useSelect } from "@mui/base";
+
 
 export default function CountryTableBody({
   columns,
@@ -101,7 +101,6 @@ export default function CountryTableBody({
                 })}
                 <TableCell>
                   {
-                  
                   (favoriteCart.indexOf(row) >= 0) ?
                   <IconButton sx={{background: 'transparent', border: 'none'}} onClick={() => favoriteCart.indexOf(row) >= 0 ? handleRemoveFavorite(row) : handleAddFavorite(row)}><FavoriteIcon sx={{color: '#C51104'}}/></IconButton> : <IconButton sx={{background: 'transparent', border: 'none'}} onClick={() => handleAddFavorite(row)}><FavoriteBorderIcon/></IconButton>
                   }

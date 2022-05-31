@@ -13,11 +13,11 @@ const theme = createTheme({
   },
 });
 
-// export const AppContext = createContext()
+
 
 function App() {
   return (
-      <div className="App">
+    <div className="App">
         <ThemeProvider theme={theme}>
           <Nav />
           <Routes>

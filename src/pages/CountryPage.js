@@ -31,10 +31,34 @@ export default function CountriesPage({ country }) {
   const { countryData, error, loading } = useCountry(name);
 
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
+  const [open4, setOpen4] = React.useState(false);
+  const [open5, setOpen5] = React.useState(false);
 
   const handleClick = () => {
     setOpen(!open);
   };
+
+  const handleClick2 = () => {
+    setOpen2(!open2);
+  };
+
+
+  const handleClick3 = () => {
+    setOpen3(!open3);
+  };
+
+
+  const handleClick4 = () => {
+    setOpen4(!open4);
+  };
+
+
+  const handleClick5 = () => {
+    setOpen5(!open5);
+  };
+
 
   if (error) return <div>Error!</div>;
   if (loading)
@@ -50,6 +74,7 @@ export default function CountriesPage({ country }) {
       {countryData ? (
         countryData.map((country) => {
           return (
+            
             <div>
               <Card sx={{ maxWidth: 345, margin: "auto" }}>
                 <CardMedia
@@ -78,60 +103,48 @@ export default function CountriesPage({ country }) {
                     <Collapse in={open} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
-                          <ListItemIcon>
-                            <StarBorder />
-                          </ListItemIcon>
                           <ListItemText primary={country.name.common} />
                         </ListItemButton>
                       </List>
                     </Collapse>
-                    <ListItemButton onClick={handleClick}>
+                    <ListItemButton onClick={handleClick2}>
                       <ListItemIcon>
                         <LanguageIcon />
                       </ListItemIcon>
                       <ListItemText primary="Region" />
-                      {open ? <ExpandLess /> : <ExpandMore />}
+                      {open2 ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse in={open2} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
-                          <ListItemIcon>
-                            <StarBorder />
-                          </ListItemIcon>
                           <ListItemText primary={country.region} />
                         </ListItemButton>
                       </List>
                     </Collapse>
-                    <ListItemButton onClick={handleClick}>
+                    <ListItemButton onClick={handleClick3}>
                       <ListItemIcon>
                         <BorderBottomIcon />
                       </ListItemIcon>
                       <ListItemText primary="Borders" />
-                      {open ? <ExpandLess /> : <ExpandMore />}
+                      {open3 ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse in={open3} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
-                        <ListItemButton sx={{ pl: 4 }}>
-                          <ListItemIcon>
-                            <StarBorder />
-                          </ListItemIcon>
-                          <ListItemText primary={country.borders} />
+                        <ListItemButton sx={{ pl: 4, flexDirection: 'column' }}>
+                          <ListItemText primary={country.borders ? country.borders : <>NO BORDERS</>}/>
                         </ListItemButton>
                       </List>
                     </Collapse>
-                    <ListItemButton onClick={handleClick}>
+                    <ListItemButton onClick={handleClick4}>
                       <ListItemIcon>
                         <CurrencyExchangeIcon />
                       </ListItemIcon>
                       <ListItemText primary="Currencies" />
-                      {open ? <ExpandLess /> : <ExpandMore />}
+                      {open4 ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse in={open4} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
-                          <ListItemIcon>
-                            <StarBorder />
-                          </ListItemIcon>
                           <ListItemText
                             primary={
                               country.currencies &&
@@ -142,7 +155,7 @@ export default function CountriesPage({ country }) {
                                     color="text.secondary"
                                     key={country.cca3 + key}
                                   >
-                                    {country.currencies[key].name}
+                                    {country.currencies[key]}
                                   </Typography>
                                 );
                               })
@@ -151,19 +164,16 @@ export default function CountriesPage({ country }) {
                         </ListItemButton>
                       </List>
                     </Collapse>
-                    <ListItemButton onClick={handleClick}>
+                    <ListItemButton onClick={handleClick5}>
                       <ListItemIcon>
                         <TranslateIcon />
                       </ListItemIcon>
                       <ListItemText primary="Languages" />
-                      {open ? <ExpandLess /> : <ExpandMore />}
+                      {open5 ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse in={open5} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
-                          <ListItemIcon>
-                            <StarBorder />
-                          </ListItemIcon>
                           <ListItemText
                             primary={
                               country.languages &&
@@ -184,7 +194,6 @@ export default function CountriesPage({ country }) {
                       </List>
                     </Collapse>
                   </List>
-                  ); 
                 </CardContent>
                 <CardActions sx={{ justifyContent: "center" }}></CardActions>
               </Card>
