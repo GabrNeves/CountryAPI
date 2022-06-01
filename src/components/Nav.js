@@ -10,10 +10,11 @@ import Badge from "@mui/material/Badge";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useState } from "react";
-import { useSelector } from 'react-redux'
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from "react-router-dom";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+
 
 
 const Search = styled("div")(({ theme }) => ({
@@ -56,14 +57,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-// const themeToggleHandler = ({theme}) => {
-//   console.log(theme.palette)
-//     // thm.mode === 'dark' ? thm.mode = 'light' : thm.mode = 'dark
-// }
 
-export default function PrimarySearchAppBar({ theme, themeToggleHandler }) {
+
+export default function PrimarySearchAppBar({ theme, darkModeHandler }) {
   const [keyword, setKeyword] = useState("");
-
+  const dispatch = useDispatch()
   const handleSearch = (e) => {
     setKeyword(e.target.value);
   };
@@ -73,11 +71,13 @@ export default function PrimarySearchAppBar({ theme, themeToggleHandler }) {
   ctry.name.common.toLowerCase().includes(keyword)
 );
 
-  
+  // const userInput = useSelector((appState) => appState.State.searchReducer.search)
+
+  // useEffect(() => {
+  //   dispatch(searchCountry(userInput.userInput))}, [userInput.userInput, dispatch])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {/* {console.log(theme.palette.mode)} */}
       <AppBar position="static">
         <Toolbar>
           <Typography
@@ -103,7 +103,9 @@ export default function PrimarySearchAppBar({ theme, themeToggleHandler }) {
             <IconButton
             aria-label='dark mode'
             color='inherit'
-            // onClick={() => {theme.palette.mode === 'light' ? theme.palette.mode = 'dark' : theme.palette.mode = 'light'}}
+            onClick={darkModeHandler}
+            size='large'
+            sx={{marginRight:'2rem'}}
             >
               <DarkModeIcon />
             </IconButton>
@@ -118,7 +120,6 @@ export default function PrimarySearchAppBar({ theme, themeToggleHandler }) {
                 </Badge> : <Badge badgeContent={favoriteCart.map((products) => products).length} color="error">
                   <FavoriteIcon />
                 </Badge> }
-                
               </Link>
             </IconButton>
           </Box>

@@ -6,11 +6,12 @@ const initialState = {
     const actionType = action.type;
     switch (actionType) {
       case "SEARCHED_COUNTRY_LIST":
-        const keyword = ''
-        const handleSearch = (e) => {keyword(e.target.value)}
+        const filteredCountry = state.countryData.filter((country) => {
+          return country.name.toLowerCase().includes(action.payload.userInput)
+        })
         return {
           ...state,
-          
+          search: filteredCountry,
         };
       default:
         return state;

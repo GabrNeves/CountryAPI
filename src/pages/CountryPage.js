@@ -11,7 +11,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-import ListSubheader from "@mui/material/ListSubheader";
+
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -19,7 +19,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
+
 import BadgeIcon from "@mui/icons-material/Badge";
 import LanguageIcon from "@mui/icons-material/Language";
 import BorderBottomIcon from "@mui/icons-material/BorderBottom";
@@ -155,7 +155,7 @@ export default function CountriesPage({ country }) {
                                     color="text.secondary"
                                     key={country.cca3 + key}
                                   >
-                                    {country.currencies[key]}
+                                    {country.currencies[key].name ? country.currencies[key].name : <>NO CURRENCY</>}
                                   </Typography>
                                 );
                               })

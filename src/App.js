@@ -6,16 +6,23 @@ import CountryPage from "./pages/CountryPage";
 import FavoritePage from "./pages/FavoritePage";
 import Nav from './components/Nav'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import React, { useState } from 'react'
+import { useSelector } from "react-redux";
 
-const theme = createTheme({
-  palette: {
-    mode: 'light',
-  },
-});
+
+
+
 
 
 
 function App() {
+
+  const themeSelector = useSelector((appState) => appState.darkModeReducer)
+
+  const theme = createTheme({
+    themeSelector
+  });
+
   return (
     <div className="App">
         <ThemeProvider theme={theme}>

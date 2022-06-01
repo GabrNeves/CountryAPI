@@ -11,7 +11,7 @@ export const fetchCountriesFailure = (error) => {
 };
 
 export const searchCountry = (searched) => {
-  return { type: "SEARCHED_COUNTRY_LIST", payload: { searched } };
+  return { type: "SEARCHED_COUNTRY_LIST", payload: { userInput: searched } };
 };
 
 export const addFavorite = (favorite) => {
@@ -21,6 +21,14 @@ export const addFavorite = (favorite) => {
 export const removeFavorite = (favorite) => {
   return { type: "REMOVE_FAVORITE", payload: { favorite } };
 };
+
+export const makeItLight = () => {
+  return { type: "LIGHT_THEME_SELECTED", payload: { palette: { mode: 'light' } } }
+}
+
+export const makeItDark = () => {
+  return { type: "DARK_THEME_SELECTED", payload: { palette: { mode: 'dark' } } }
+}
 
 export const fetchCountries = () => {
   return async (dispatch) => {
