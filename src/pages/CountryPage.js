@@ -1,7 +1,8 @@
 import React from "react";
-import useCountry from "../custom-hooks/useCountry";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+
+import useCountry from "../custom-hooks/useCountry";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import Card from "@mui/material/Card";
@@ -10,8 +11,6 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-
-
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -19,12 +18,14 @@ import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-
 import BadgeIcon from "@mui/icons-material/Badge";
 import LanguageIcon from "@mui/icons-material/Language";
 import BorderBottomIcon from "@mui/icons-material/BorderBottom";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import TranslateIcon from "@mui/icons-material/Translate";
+
+
+
 
 export default function CountriesPage({ country }) {
   const { name } = useParams();
@@ -70,7 +71,7 @@ export default function CountriesPage({ country }) {
     );
   return (
     <div>
-      <h1 style={{ marginTop: "7rem" }}>{name}</h1>
+      <Typography variant='h2' sx={{margin:'4rem 0'}} >{name}</Typography>
       {countryData ? (
         countryData.map((country) => {
           return (
@@ -195,7 +196,7 @@ export default function CountriesPage({ country }) {
                     </Collapse>
                   </List>
                 </CardContent>
-                <CardActions sx={{ justifyContent: "center" }}></CardActions>
+                <CardActions ></CardActions>
               </Card>
               <Link to="/">
                 <Button variant="contained" sx={{ marginTop: "2rem" }}>

@@ -1,11 +1,9 @@
 import { combineReducers } from "redux";
 
-import dataReducer from './dataReducer';
-import favoriteReducer from './favoriteReducer';
-import searchReducer from './searchReducer';
-import darkModeReducer from './searchReducer';
+import dataReducer from "./dataReducer";
+import favoriteReducer from "./favoriteReducer";
 
 const createRootReducer = () =>
-combineReducers({  dataReducer, favoriteReducer, searchReducer, darkModeReducer });
+  combineReducers({ dataReducer, favoriteReducer });
 
 export default createRootReducer;

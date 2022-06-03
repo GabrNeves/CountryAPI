@@ -1,4 +1,8 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
+import { searchCountry } from '../redux/action'
+
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -10,11 +14,8 @@ import Badge from "@mui/material/Badge";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux'
-import { Link } from "react-router-dom";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-
+import LightModeIcon from '@mui/icons-material/LightMode';
 
 
 const Search = styled("div")(({ theme }) => ({
@@ -57,24 +58,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+export default function PrimarySearchAppBar({ theme, setModeHandler }) {
+  //handle favorite cart
+  const favoriteCart = useSelector((appState) => appState.favoriteReducer.favoriteCart);
 
-
-export default function PrimarySearchAppBar({ theme, darkModeHandler }) {
-  const [keyword, setKeyword] = useState("");
+  //handle filtering country
   const dispatch = useDispatch()
-  const handleSearch = (e) => {
-    setKeyword(e.target.value);
-  };
-  const countryData = useSelector((appState) => appState.dataReducer.countriesData)
-  const favoriteCart = useSelector((appState) => appState.favoriteReducer.favoriteCart)
-  const countrySearch = countryData?.filter((ctry) =>
-  ctry.name.common.toLowerCase().includes(keyword)
-);
+  const handleChange = (e) => {
+    const value = e.target.value
+    dispatch(searchCountry(value))
+  }
 
-  // const userInput = useSelector((appState) => appState.State.searchReducer.search)
-
-  // useEffect(() => {
-  //   dispatch(searchCountry(userInput.userInput))}, [userInput.userInput, dispatch])
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -95,19 +89,19 @@ export default function PrimarySearchAppBar({ theme, darkModeHandler }) {
             <StyledInputBase
               placeholder={'Search country...'}
               inputProps={{ "aria-label": "search" }}
-              onChange={handleSearch}
+              onChange={handleChange}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" }, marginRight: '4rem' }}>
+          <Box sx={{ display: { xs: "none", sm: "flex" }, marginRight: '4rem' }}>
             <IconButton
             aria-label='dark mode'
             color='inherit'
-            onClick={darkModeHandler}
+            onClick={setModeHandler}
             size='large'
             sx={{marginRight:'2rem'}}
             >
-              <DarkModeIcon />
+              {theme.palette.mode === 'light' ? <DarkModeIcon/> : <LightModeIcon/>}
             </IconButton>
             <IconButton
               size="large"

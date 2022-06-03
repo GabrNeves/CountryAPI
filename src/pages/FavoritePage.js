@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFavorite } from "../redux/action";
+
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -25,7 +26,7 @@ export default function FavoritePage() {
 
   return (
     <div>
-      <h1>Here's your selected favorite countries</h1>
+      <Typography variant='h3' sx={{padding: '4rem', color:theme.palette.text.primary}}>Here's your selected favorite countries</Typography>
       {favoriteCountry ? (
         favoriteCountry.map((country) => {
           return (

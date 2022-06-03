@@ -6,8 +6,8 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 
 export default function CountryTableHead({ columns }) {
   return (
-    <TableHead sx={{ backgroudColor: "black" }}>
-      <TableRow>
+    <TableHead >
+      <TableRow color='primary'>
         {columns.map((column) => (
           <TableCell
             key={column.id}

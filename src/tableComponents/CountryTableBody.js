@@ -7,7 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Avatar from "@mui/material/Avatar";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch, useSelector } from "react-redux";
-import { addFavorite, removeFavorite } from "../redux/action";
+import { addFavorite, removeFavorite, searchCountry, countryData } from "../redux/action";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import IconButton from '@mui/material/IconButton';
@@ -16,6 +16,7 @@ import IconButton from '@mui/material/IconButton';
 export default function CountryTableBody({
   columns,
   countrySearch,
+  countryData,
   error,
   loading,
   page,
@@ -30,7 +31,9 @@ export default function CountryTableBody({
   }
   const favoriteCart = useSelector((appState) => appState.favoriteReducer.favoriteCart)
 
-
+  const filteredCountry = (value) => {
+    dispatch(searchCountry(value))
+  }
 
   if (error) return <div>Error!</div>;
   if (loading) {
@@ -42,8 +45,9 @@ export default function CountryTableBody({
     )};
   return (
     <TableBody>
-      {countrySearch &&
-        countrySearch
+      {/*I changed here from countryFilter to countryData, trying to make the filter on nav bar work*/}
+      {countryData && 
+        countryData
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map((row) => {
             return (

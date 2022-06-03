@@ -1,7 +1,8 @@
 const initialState = {
-  countriesData: null,
+  countriesData: [],
   error: null,
   loading: false,
+  filteredCountry: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -18,19 +19,22 @@ const reducer = (state = initialState, action) => {
         countriesData: action.payload.response,
         loading: false,
       };
-    case "SEARCHED_COUNTRY_LIST":
-      const filteredCountry = state.countryData.filter((country) => {
-        return country.name.toLowerCase().includes(action.payload.userInput);
-      });
-      return {
-        ...state,
-        search: filteredCountry,
-      };
     case "FETCH_COUNTRIES_FAILURE":
       return {
         ...state,
         error: action.payload.error,
         loading: false,
+      };
+    case "SEARCHED_COUNTRY_LIST":
+      const filteredCountry = state.countriesData.filter(country => country.name.common.toLowerCase().includes(action.payload.toLowerCase()))
+    
+      console.log(action.payload, 'payload')
+      console.log(state.countriesData, 'countriesData')
+      return {
+        ...state,
+        countriesData: action.countriesData,
+        loading: false,
+        filteredCountry: filteredCountry,
       };
     default:
       return state;

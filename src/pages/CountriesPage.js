@@ -1,17 +1,24 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 import { fetchCountries } from "../redux/action";
 // import useCountries from "../custom-hooks/useCountries";
 import CountryTableHead from "../tableComponents/CountryTableHead";
-
 import CountryTableBody from "../tableComponents/CountryTableBody";
+import { Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
 
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import CircularProgress from "@mui/material/CircularProgress";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { useTheme } from "@mui/material/styles";
 
 const columns = [
   {
@@ -43,9 +50,8 @@ const columns = [
   },
 ];
 
-
 export default function CountriesPage() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -62,22 +68,31 @@ export default function CountriesPage() {
   // const { countryData, error, loading } = useCountries(
   //   "https://restcountries.com/v3.1/all"
   // );
+  const theme = useTheme();
 
-  const countryData = useSelector((appState) => appState.dataReducer.countriesData)
-  const loading = useSelector((appState) => appState.dataReducer.loading)
-  const error = useSelector((appState) => appState.dataReducer.error)
+  const countryData = useSelector(
+    (appState) => appState.dataReducer.countriesData
+  );
+  const loading = useSelector((appState) => appState.dataReducer.loading);
+  const error = useSelector((appState) => appState.dataReducer.error);
+
+  const favoriteCart = useSelector(
+    (appState) => appState.favoriteReducer.favoriteCart
+  );
 
   const handleSearch = (e) => {
     setKeyword(e.target.value);
   };
 
-  const countrySearch = countryData?.filter((ctry) =>
-    ctry.name.common.toLowerCase().includes(keyword) || ctry.region.toLowerCase().includes(keyword)
+  const countrySearch = countryData?.filter(
+    (ctry) =>
+      ctry.name.common.toLowerCase().includes(keyword) ||
+      ctry.region.toLowerCase().includes(keyword)
   );
 
-  useEffect(()=> {
-    dispatch(fetchCountries())
-  }, [dispatch])
+  useEffect(() => {
+    dispatch(fetchCountries());
+  }, [dispatch]);
 
   if (error) return <div>Error!</div>;
   if (loading)
@@ -90,17 +105,61 @@ export default function CountriesPage() {
   return (
     <div>
       <input placeholder="Search country..." onChange={handleSearch}></input>
-      <Paper sx={{ width: "90%", overflow: "hidden", margin:'5rem auto 0 auto' }}>
-        <TableContainer sx={{ maxHeight: '60vh' }}>
+      <Box
+        sx={{
+          display: { xs: "flex", sm: "none" },
+          position: "absolute",
+          right: 10,
+          borderRadius: "50%",
+          height: "50px",
+          width: "50px",
+          boxShadow: 2,
+          color: theme.palette.text.primary,
+        }}
+      >
+        <IconButton
+          size="large"
+          aria-label="show 17 new notifications"
+          color="inherit"
+        >
+          <Link to="/favorites">
+            {favoriteCart.map((products) => products).length === 0 ? (
+              <Badge
+                badgeContent={favoriteCart.map((products) => products).length}
+              >
+                <FavoriteBorderIcon />
+              </Badge>
+            ) : (
+              <Badge
+                badgeContent={favoriteCart.map((products) => products).length}
+              >
+                <FavoriteIcon />
+              </Badge>
+            )}
+          </Link>
+        </IconButton>
+      </Box>
+      <Paper
+        sx={{ width: "90%", overflow: "hidden", margin: "5rem auto 0 auto" }}
+      >
+        <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table stickyHeader aria-label="sticky table">
-            <CountryTableHead columns={ columns } />
-            <CountryTableBody columns={ columns } countrySearch={ countrySearch } error={ error } loading={ loading } page={ page } rowsPerPage={ rowsPerPage }/>
+            <CountryTableHead columns={columns} />
+            <CountryTableBody
+              columns={columns}
+              countrySearch={countryData}
+              error={error}
+              loading={loading}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              countryData={countryData}
+            />
           </Table>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={countrySearch ? countrySearch.length : 0}
+          count={countryData ? countryData.length : 0}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

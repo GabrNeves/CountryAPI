@@ -10,8 +10,8 @@ export const fetchCountriesFailure = (error) => {
   return { type: "FETCH_COUNTRIES_FAILURE", payload: { error } };
 };
 
-export const searchCountry = (searched) => {
-  return { type: "SEARCHED_COUNTRY_LIST", payload: { userInput: searched } };
+export const searchCountry = (value) => {
+  return { type: "SEARCHED_COUNTRY_LIST", payload: value };
 };
 
 export const addFavorite = (favorite) => {
@@ -21,14 +21,6 @@ export const addFavorite = (favorite) => {
 export const removeFavorite = (favorite) => {
   return { type: "REMOVE_FAVORITE", payload: { favorite } };
 };
-
-export const makeItLight = () => {
-  return { type: "LIGHT_THEME_SELECTED", payload: { palette: { mode: 'light' } } }
-}
-
-export const makeItDark = () => {
-  return { type: "DARK_THEME_SELECTED", payload: { palette: { mode: 'dark' } } }
-}
 
 export const fetchCountries = () => {
   return async (dispatch) => {
@@ -52,9 +44,9 @@ export const fetchCountry = (name) => {
       const response = await fetch(
         `https://restcountries.com/v3.1/name/${name}`
       ).then((response) => response.json());
-      dispatch(fetchCountriesSuccess(response))
+      dispatch(fetchCountriesSuccess(response));
     } catch (error) {
-      dispatch(fetchCountriesFailure(error))
+      dispatch(fetchCountriesFailure(error));
     }
   };
 };
