@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   country: [],
   filteredCountry: [],
+  sortedCountry: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -69,7 +70,7 @@ const reducer = (state = initialState, action) => {
       console.log('sortBy: ', sortBy);
       return {
         ...state,
-        filteredCountry: sortedCountries,
+        sortedCountry: sortedCountries,
       };
       
 

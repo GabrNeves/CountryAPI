@@ -34,6 +34,7 @@ export default function CountryTableBody({
   const filteredCountry = (value) => {
     dispatch(searchCountry(value))
   }
+  
 
   if (error) return <div>Error!</div>;
   if (loading) {
