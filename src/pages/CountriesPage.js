@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCountries } from "../redux/action";
+import { fetchCountries, sortCountries } from "../redux/action";
 import CountryTableHead from "../tableComponents/CountryTableHead";
 import CountryTableBody from "../tableComponents/CountryTableBody";
 import { Link } from "react-router-dom";
@@ -65,8 +65,9 @@ export default function CountriesPage() {
   const theme = useTheme();
 
   const countryData = useSelector(
-    (appState) => appState.dataReducer.countriesData
+    (appState) => appState.dataReducer.filteredCountry
   );
+  
 
   const loading = useSelector((appState) => appState.dataReducer.loading);
   const error = useSelector((appState) => appState.dataReducer.error);
@@ -79,6 +80,10 @@ export default function CountriesPage() {
     dispatch(fetchCountries());
   }, [dispatch]);
 
+  const handleSorting = (sortBy) => {
+    dispatch(sortCountries(sortBy))
+  }
+
   if (error) return <div>Error!</div>;
   if (loading)
     return (
@@ -89,6 +94,8 @@ export default function CountriesPage() {
     );
   return (
     <div style={{paddingTop: '5rem'}}>
+      <button onClick={()=>handleSorting('asc')}>SORT ASC</button>
+      <button onClick={()=>handleSorting('desc')}>SORT DESC</button>
       <Box
         sx={{
           display: { xs: "flex", sm: "none" },

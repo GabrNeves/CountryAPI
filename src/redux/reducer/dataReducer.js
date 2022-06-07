@@ -14,35 +14,65 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: true,
       };
+
     case "FETCH_COUNTRIES_SUCCESS":
       return {
         ...state,
         countriesData: action.payload.response,
+        filteredCountry: action.payload.response,
         loading: false,
       };
+
     case "FETCH_COUNTRIES_FAILURE":
       return {
         ...state,
         error: action.payload.error,
         loading: false,
       };
+
     case "FETCH_COUNTRY_SUCCESS":
       return {
         ...state,
         country: action.payload.response,
-        loading: false
-      }  
+        loading: false,
+      };
+
     case "SEARCHED_COUNTRY_LIST":
-      const filteredCountry = state.countriesData.filter(country => country.name.common.toLowerCase().includes(action.payload.toLowerCase()))
-    
-      console.log(action.payload, 'payload')
-      console.log(state.countriesData, 'countriesData')
+      const filteredCountry = state.countriesData.filter((country) =>
+        country.name.common.toLowerCase().includes(action.payload.toLowerCase())
+      );
       return {
         ...state,
-        countriesData: filteredCountry,
         loading: false,
-        // filteredCountry: filteredCountry,
+        filteredCountry,
       };
+    case "SORT_COUNTRIES":
+      const sortBy = action.payload;
+      const sortedCountry = state.filteredCountry;
+      
+      const sortedCountries = sortedCountry.sort((a, b) => {
+        if (a.name.common < b.name.common) {
+          if (sortBy === 'asc') {
+            return -1;
+          }
+          return 1;
+        }
+        if (a.name.common > b.name.common) {
+          if (sortBy === 'asc') {
+            return 1;
+          }
+          return -1;
+        }
+        return 0;
+      });
+      console.log('sortedCountries: ', sortedCountries)
+      console.log('sortBy: ', sortBy);
+      return {
+        ...state,
+        filteredCountry: sortedCountries,
+      };
+      
+
     default:
       return state;
   }

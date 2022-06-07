@@ -54,3 +54,10 @@ export const fetchCountry = (name) => {
     }
   };
 };
+
+export const sortCountries = (sortBy) => {
+  return {
+    type: 'SORT_COUNTRIES',
+    payload: sortBy,
+  }
+}
