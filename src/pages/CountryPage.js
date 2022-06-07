@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-
-import useCountry from "../custom-hooks/useCountry";
+import { useDispatch, useSelector } from "react-redux";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import Card from "@mui/material/Card";
@@ -23,13 +22,22 @@ import LanguageIcon from "@mui/icons-material/Language";
 import BorderBottomIcon from "@mui/icons-material/BorderBottom";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import TranslateIcon from "@mui/icons-material/Translate";
+import { fetchCountry } from "../redux/action";
 
 
 
 
 export default function CountriesPage({ country }) {
   const { name } = useParams();
-  const { countryData, error, loading } = useCountry(name);
+
+  const dispatch = useDispatch();
+  const countryData = useSelector((appState) => appState.dataReducer.country)
+  const error = useSelector((appState) => appState.dataReducer.error)
+  const loading = useSelector((appState) => appState.dataReducer.loading)
+
+  useEffect(() => {
+    dispatch(fetchCountry(name))
+  }, [dispatch, name])
 
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
@@ -45,21 +53,17 @@ export default function CountriesPage({ country }) {
     setOpen2(!open2);
   };
 
-
   const handleClick3 = () => {
     setOpen3(!open3);
   };
-
 
   const handleClick4 = () => {
     setOpen4(!open4);
   };
 
-
   const handleClick5 = () => {
     setOpen5(!open5);
   };
-
 
   if (error) return <div>Error!</div>;
   if (loading)
@@ -75,7 +79,6 @@ export default function CountriesPage({ country }) {
       {countryData ? (
         countryData.map((country) => {
           return (
-            
             <div>
               <Card sx={{ maxWidth: 345, margin: "auto" }}>
                 <CardMedia

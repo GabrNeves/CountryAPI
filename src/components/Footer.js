@@ -1,10 +1,11 @@
-import Box from '@mui/material/Box'
 import React from 'react'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 
 export default function Footer() {
   return (
     <Box>
-      some
+      <Typography>some</Typography>
     </Box>
   )
 }

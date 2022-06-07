@@ -10,6 +10,10 @@ export const fetchCountriesFailure = (error) => {
   return { type: "FETCH_COUNTRIES_FAILURE", payload: { error } };
 };
 
+export const fetchCountrySuccess = (response) => {
+  return { type: "FETCH_COUNTRY_SUCCESS", payload: { response } }
+}
+
 export const searchCountry = (value) => {
   return { type: "SEARCHED_COUNTRY_LIST", payload: value };
 };
@@ -44,7 +48,7 @@ export const fetchCountry = (name) => {
       const response = await fetch(
         `https://restcountries.com/v3.1/name/${name}`
       ).then((response) => response.json());
-      dispatch(fetchCountriesSuccess(response));
+      dispatch(fetchCountrySuccess(response));
     } catch (error) {
       dispatch(fetchCountriesFailure(error));
     }

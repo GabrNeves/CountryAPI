@@ -45,7 +45,6 @@ export default function CountryTableBody({
     )};
   return (
     <TableBody>
-      {/*I changed here from countryFilter to countryData, trying to make the filter on nav bar work*/}
       {countryData && 
         countryData
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
