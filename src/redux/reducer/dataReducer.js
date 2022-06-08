@@ -4,7 +4,6 @@ const initialState = {
   loading: false,
   country: [],
   filteredCountry: [],
-  sortedCountry: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -40,38 +39,39 @@ const reducer = (state = initialState, action) => {
 
     case "SEARCHED_COUNTRY_LIST":
       const filteredCountry = state.countriesData.filter((country) =>
-        country.name.common.toLowerCase().includes(action.payload.toLowerCase())
+        country.name.common.toLowerCase().includes(action.payload.toLowerCase()) || country.region.toLowerCase().includes(action.payload.toLowerCase())
       );
       return {
         ...state,
         loading: false,
         filteredCountry,
       };
-    case "SORT_COUNTRIES":
-      const sortBy = action.payload;
-      const sortedCountry = state.filteredCountry;
       
-      const sortedCountries = sortedCountry.sort((a, b) => {
-        if (a.name.common < b.name.common) {
-          if (sortBy === 'asc') {
-            return -1;
-          }
-          return 1;
-        }
-        if (a.name.common > b.name.common) {
-          if (sortBy === 'asc') {
-            return 1;
-          }
-          return -1;
-        }
-        return 0;
-      });
-      console.log('sortedCountries: ', sortedCountries)
-      console.log('sortBy: ', sortBy);
-      return {
-        ...state,
-        sortedCountry: sortedCountries,
-      };
+    // case "SORT_COUNTRIES":
+    //   const order = action.payload;
+    //   const sortedCountry = [...state.countriesData];
+      
+    //   const sortedCountries = sortedCountry.sort((a, b) => {
+    //     if (a.name.common < b.name.common) {
+    //       if (order === 'asc') {
+    //         return -1;
+    //       }
+    //       return 1;
+    //     }
+    //     if (a.name.common > b.name.common) {
+    //       if (order === 'asc') {
+    //         return 1;
+    //       }
+    //       return -1;
+    //     }
+    //     return 0;
+    //   });
+    //   console.log('sortedCountries: ', sortedCountries)
+    //   console.log('order: ', order);
+    //   return {
+    //     ...state,
+    //     filteredCountry: sortedCountries,
+    //   };
       
 
     default:

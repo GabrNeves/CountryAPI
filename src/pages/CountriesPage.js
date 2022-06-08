@@ -1,27 +1,36 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCountries, sortCountries } from "../redux/action";
+import { fetchCountries } from "../redux/action";
 import CountryTableHead from "../tableComponents/CountryTableHead";
 import CountryTableBody from "../tableComponents/CountryTableBody";
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
+
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
 import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
+import TableSortLabel from '@mui/material/TableSortLabel';
 import CircularProgress from "@mui/material/CircularProgress";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
+import { visuallyHidden } from '@mui/utils';
+
 
 const columns = [
   {
     id: "flag",
     label: "Flag",
+    numeric: false,
     minWidth: 170,
     align: "center",
   },
@@ -30,6 +39,7 @@ const columns = [
   {
     id: "population",
     label: "Population",
+    numeric: true,
     minWidth: 170,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
@@ -37,21 +47,115 @@ const columns = [
   {
     id: "languages",
     label: "Languages",
+    numeric: false,
     minWidth: 170,
     align: "right",
   },
   {
     id: "capital",
     label: "capital",
+    numeric: false,
     minWidth: 170,
     align: "right",
   },
 ];
 
+//sorting from material UI
+
+function EnhancedTableHead(props) {
+  const { order, orderBy, onRequestSort } =
+    props;
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        {columns.map((column) => (
+          <TableCell
+            key={column.id}
+            align={column.align}
+            padding={column.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === column.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === column.id}
+              direction={orderBy === column.id ? order : 'asc'}
+              onClick={createSortHandler(column.id)}
+            >
+              {column.label}
+              {orderBy === column.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+        <TableCell> </TableCell>
+      </TableRow>
+    </TableHead>
+  );
+}
+
+EnhancedTableHead.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+  onRequestSort: PropTypes.func.isRequired,
+  onSelectAllClick: PropTypes.func.isRequired,
+  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  orderBy: PropTypes.string.isRequired,
+  rowCount: PropTypes.number.isRequired,
+};
+
+
+
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+//IE11 support
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
+
+
 export default function CountriesPage() {
   const dispatch = useDispatch();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [order, setOrder] = React.useState('asc')
+  const [orderBy, setOrderBy] = React.useState('name');
+
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -64,10 +168,10 @@ export default function CountriesPage() {
 
   const theme = useTheme();
 
+  
   const countryData = useSelector(
     (appState) => appState.dataReducer.filteredCountry
   );
-  
 
   const loading = useSelector((appState) => appState.dataReducer.loading);
   const error = useSelector((appState) => appState.dataReducer.error);
@@ -80,9 +184,6 @@ export default function CountriesPage() {
     dispatch(fetchCountries());
   }, [dispatch]);
 
-  const handleSorting = (sortBy) => {
-    dispatch(sortCountries(sortBy))
-  }
 
   if (error) return <div>Error!</div>;
   if (loading)
@@ -94,8 +195,6 @@ export default function CountriesPage() {
     );
   return (
     <div style={{paddingTop: '5rem'}}>
-      <button onClick={()=>handleSorting('asc')}>SORT ASC</button>
-      <button onClick={()=>handleSorting('desc')}>SORT DESC</button>
       <Box
         sx={{
           display: { xs: "flex", sm: "none" },
@@ -136,15 +235,24 @@ export default function CountriesPage() {
       >
         <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table stickyHeader aria-label="sticky table">
-            <CountryTableHead columns={columns} />
+            <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+            rowCount={countryData.length}
+            />
+            {/* <CountryTableHead columns={columns}/> */}
             <CountryTableBody
               columns={columns}
-              countrySearch={countryData}
               error={error}
               loading={loading}
               page={page}
               rowsPerPage={rowsPerPage}
               countryData={countryData}
+              stableSort={stableSort}
+              getComparator={getComparator}
+              order={order}
+              orderBy={orderBy}
             />
           </Table>
         </TableContainer>

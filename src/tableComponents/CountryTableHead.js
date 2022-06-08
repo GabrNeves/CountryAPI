@@ -14,7 +14,8 @@ export default function CountryTableHead({ columns }) {
             align={column.align}
             style={{ minWidth: column.minWidth }}
           >
-            <TableSortLabel>
+            <TableSortLabel
+            >
               {column.label}
             </TableSortLabel>
           </TableCell>

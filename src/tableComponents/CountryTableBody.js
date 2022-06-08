@@ -7,7 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Avatar from "@mui/material/Avatar";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch, useSelector } from "react-redux";
-import { addFavorite, removeFavorite, searchCountry, countryData } from "../redux/action";
+import { addFavorite, removeFavorite } from "../redux/action";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import IconButton from '@mui/material/IconButton';
@@ -15,12 +15,15 @@ import IconButton from '@mui/material/IconButton';
 
 export default function CountryTableBody({
   columns,
-  countrySearch,
   countryData,
   error,
   loading,
   page,
   rowsPerPage,
+  stableSort,
+  getComparator,
+  order,
+  orderBy
 }) {
   const dispatch = useDispatch();
   const handleAddFavorite = (favorite) => {
@@ -30,11 +33,6 @@ export default function CountryTableBody({
     dispatch(removeFavorite(favorite))
   }
   const favoriteCart = useSelector((appState) => appState.favoriteReducer.favoriteCart)
-
-  const filteredCountry = (value) => {
-    dispatch(searchCountry(value))
-  }
-  
 
   if (error) return <div>Error!</div>;
   if (loading) {
@@ -47,7 +45,7 @@ export default function CountryTableBody({
   return (
     <TableBody>
       {countryData && 
-        countryData
+        stableSort(countryData, getComparator(order, orderBy))
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map((row) => {
             return (
