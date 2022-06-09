@@ -28,6 +28,7 @@ export default function renderStore(initialState = initState) {
     if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
       composeEnhancers = window.__REDUX__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
     }
+    composeEnhancers = compose;
   }
 
   let favoriteObj = localStorage.getItem("favoriteItem");

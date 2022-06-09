@@ -10,8 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, removeFavorite } from "../redux/action";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import IconButton from '@mui/material/IconButton';
-
+import IconButton from "@mui/material/IconButton";
 
 export default function CountryTableBody({
   columns,
@@ -23,31 +22,39 @@ export default function CountryTableBody({
   stableSort,
   getComparator,
   order,
-  orderBy
+  orderBy,
 }) {
   const dispatch = useDispatch();
   const handleAddFavorite = (favorite) => {
     dispatch(addFavorite(favorite));
   };
   const handleRemoveFavorite = (favorite) => {
-    dispatch(removeFavorite(favorite))
-  }
-  const favoriteCart = useSelector((appState) => appState.favoriteReducer.favoriteCart)
-
+    dispatch(removeFavorite(favorite));
+  };
+  const favoriteCart = useSelector(
+    (appState) => appState.favoriteReducer.favoriteCart
+  );
+  
+  
   if (error) return <div>Error!</div>;
   if (loading) {
     return (
       <CircularProgress
-        disableShrink
-        sx={{ position: "absolute", left: "50vw", top: "50vh" }}
+      disableShrink
+      sx={{ position: "absolute", left: "50vw", top: "50vh" }}
       />
-    )};
-  return (
-    <TableBody>
-      {countryData && 
+      );
+    }
+    return (
+      <TableBody>
+      {countryData &&
         stableSort(countryData, getComparator(order, orderBy))
-          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          .map((row) => {
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((row) => {
+          const favCheck = favoriteCart.some((item) => {
+            return row.name.common === item.name.common
+          })
+          
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={row.ccn3}>
                 {columns.map((column) => {
@@ -75,7 +82,10 @@ export default function CountryTableBody({
                       {column.id === "languages" ? (
                         Object.keys(value).map((key) => {
                           return (
-                            <Link to={`/country/${row.name.common}`} key={key + row.name.common}>
+                            <Link
+                              to={`/country/${row.name.common}`}
+                              key={key + row.name.common}
+                            >
                               <p>{value[key]}</p>
                             </Link>
                           );
@@ -102,10 +112,29 @@ export default function CountryTableBody({
                   );
                 })}
                 <TableCell>
-                  {
-                  (favoriteCart.indexOf(row) >= 0) ?
-                  <IconButton sx={{background: 'transparent', border: 'none'}} onClick={() => favoriteCart.indexOf(row) >= 0 ? handleRemoveFavorite(row) : handleAddFavorite(row)}><FavoriteIcon sx={{color: '#C51104'}}/></IconButton> : <IconButton sx={{background: 'transparent', border: 'none'}} onClick={() => handleAddFavorite(row)}><FavoriteBorderIcon/></IconButton>
-                  }
+
+                  {favoriteCart.indexOf(row) >= 0 ? (
+                    <IconButton
+                      sx={{ background: "transparent", border: "none" }}
+                      onClick={() =>
+                        favCheck
+                          ? handleRemoveFavorite(row)
+                          : handleAddFavorite(row)
+                      }
+                    >
+                      {favCheck ? <FavoriteIcon sx={{ color: "#C51104" }} /> : <FavoriteBorderIcon /> }
+                      
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      sx={{ background: "transparent", border: "none" }}
+                      onClick={() => favCheck
+                        ? handleRemoveFavorite(row)
+                        : handleAddFavorite(row)}
+                    >
+                      {!favCheck ? <FavoriteBorderIcon /> : <FavoriteIcon sx={{ color: "#C51104" }} /> }
+                    </IconButton>
+                  )}
                 </TableCell>
               </TableRow>
             );
