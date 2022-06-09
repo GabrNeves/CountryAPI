@@ -75,7 +75,7 @@ export default function CountryTableBody({
                       {column.id === "languages" ? (
                         Object.keys(value).map((key) => {
                           return (
-                            <Link to={`/country/${row.name.common}`} key={key}>
+                            <Link to={`/country/${row.name.common}`} key={key + row.name.common}>
                               <p>{value[key]}</p>
                             </Link>
                           );
