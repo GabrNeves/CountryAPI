@@ -2,29 +2,28 @@ import * as React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountries } from "../redux/action";
-import CountryTableHead from "../tableComponents/CountryTableHead";
+// import CountryTableHead from "../tableComponents/CountryTableHead";
 import CountryTableBody from "../tableComponents/CountryTableBody";
 import { Link } from "react-router-dom";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
 import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
-import TableSortLabel from '@mui/material/TableSortLabel';
+import TableSortLabel from "@mui/material/TableSortLabel";
 import CircularProgress from "@mui/material/CircularProgress";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
-import { visuallyHidden } from '@mui/utils';
-
+import { visuallyHidden } from "@mui/utils";
 
 const columns = [
   {
@@ -63,8 +62,7 @@ const columns = [
 //sorting from material UI
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } =
-    props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -76,24 +74,26 @@ function EnhancedTableHead(props) {
           <TableCell
             key={column.id}
             align={column.align}
-            padding={column.disablePadding ? 'none' : 'normal'}
+            padding={column.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === column.id ? order : false}
+            width = {column.minWidth}
           >
             <TableSortLabel
               active={orderBy === column.id}
-              direction={orderBy === column.id ? order : 'asc'}
+              direction={orderBy === column.id ? order : "asc"}
               onClick={createSortHandler(column.id)}
+              
             >
               {column.label}
               {orderBy === column.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                <Box component="span" sx={visuallyHidden} >
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </Box>
               ) : null}
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell> </TableCell>
+        <TableCell width = "170"> </TableCell>
       </TableRow>
     </TableHead>
   );
@@ -101,12 +101,10 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
   onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
-
-
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -119,7 +117,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -137,23 +135,18 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
 export default function CountriesPage() {
   const dispatch = useDispatch();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [order, setOrder] = React.useState('asc')
-  const [orderBy, setOrderBy] = React.useState('name');
-
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("name");
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-
-
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -166,7 +159,6 @@ export default function CountriesPage() {
 
   const theme = useTheme();
 
-  
   const countryData = useSelector(
     (appState) => appState.dataReducer.filteredCountry
   );
@@ -182,7 +174,6 @@ export default function CountriesPage() {
     dispatch(fetchCountries());
   }, [dispatch]);
 
-
   if (error) return <div>Error!</div>;
   if (loading)
     return (
@@ -192,7 +183,7 @@ export default function CountriesPage() {
       />
     );
   return (
-    <div style={{paddingTop: '5rem'}}>
+    <div style={{ paddingTop: "5rem" }}>
       <Box
         sx={{
           display: { xs: "flex", sm: "none" },
@@ -214,7 +205,7 @@ export default function CountriesPage() {
           <Link to="/favorites">
             {favoriteCart.map((products) => products).length === 0 ? (
               <Badge
-                badgeContent={favoriteCart.map((products) => products).length} 
+                badgeContent={favoriteCart.map((products) => products).length}
               >
                 <FavoriteBorderIcon />
               </Badge>
@@ -228,16 +219,14 @@ export default function CountriesPage() {
           </Link>
         </IconButton>
       </Box>
-      <Paper
-        sx={{ width: "90%", overflow: "hidden", margin: 'auto' }}
-      >
+      <Paper sx={{ width: "90%", overflow: "hidden", margin: "auto" }}>
         <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table stickyHeader aria-label="sticky table">
             <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-            rowCount={countryData.length}
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+              rowCount={countryData.length}
             />
             {/* <CountryTableHead columns={columns}/> */}
             <CountryTableBody

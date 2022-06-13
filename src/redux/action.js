@@ -1,29 +1,39 @@
+import {
+FETCH_COUNTRIES_SUCCESS,
+FETCH_COUNTRIES_REQUEST,
+FETCH_COUNTRIES_FAILURE,
+FETCH_COUNTRY_SUCCESS,
+SEARCHED_COUNTRY_LIST,
+ADD_FAVORITE,
+REMOVE_FAVORITE,
+} from './constants'
+
 export const fetchCountriesRequest = () => {
-  return { type: "FETCH_COUNTRIES_REQUEST" };
+  return { type: FETCH_COUNTRIES_REQUEST };
 };
 
 export const fetchCountriesSuccess = (response) => {
-  return { type: "FETCH_COUNTRIES_SUCCESS", payload: { response } };
+  return { type: FETCH_COUNTRIES_SUCCESS, payload: { response } };
 };
 
 export const fetchCountriesFailure = (error) => {
-  return { type: "FETCH_COUNTRIES_FAILURE", payload: { error } };
+  return { type: FETCH_COUNTRIES_FAILURE, payload: { error } };
 };
 
 export const fetchCountrySuccess = (response) => {
-  return { type: "FETCH_COUNTRY_SUCCESS", payload: { response } }
+  return { type: FETCH_COUNTRY_SUCCESS, payload: { response } }
 }
 
 export const searchCountry = (value) => {
-  return { type: "SEARCHED_COUNTRY_LIST", payload: value };
+  return { type: SEARCHED_COUNTRY_LIST, payload: value };
 };
 
 export const addFavorite = (favorite) => {
-  return { type: "ADD_FAVORITE", payload: { favorite } };
+  return { type: ADD_FAVORITE, payload: { favorite } };
 };
 
 export const removeFavorite = (favorite) => {
-  return { type: "REMOVE_FAVORITE", payload: { favorite } };
+  return { type: REMOVE_FAVORITE, payload: { favorite } };
 };
 
 export const fetchCountries = () => {

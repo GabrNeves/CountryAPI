@@ -1,3 +1,5 @@
+import {ADD_FAVORITE, REMOVE_FAVORITE} from '../constants'
+
 const initialState = {
     favoriteCart: [],
   };
@@ -5,7 +7,7 @@ const initialState = {
   const reducer = (state = initialState, action) => {
     const actionType = action.type;
     switch (actionType) {
-      case "ADD_FAVORITE":
+      case ADD_FAVORITE:
           const favorite = action.payload.favorite
           if (state.favoriteCart.find((p) => p.name.common === favorite.name.common)) {
               return state
@@ -15,7 +17,7 @@ const initialState = {
           country: {...state.country},
           favoriteCart: [...state.favoriteCart, favorite],
         };
-      case "REMOVE_FAVORITE": {
+      case REMOVE_FAVORITE: {
           const favorite = action.payload.favorite
           const index = state.favoriteCart.findIndex((p) => p.name.common === favorite.name.common)
           if (index >= 0) {

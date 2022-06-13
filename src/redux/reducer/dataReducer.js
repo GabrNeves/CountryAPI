@@ -1,3 +1,11 @@
+import {
+  FETCH_COUNTRIES_SUCCESS,
+  FETCH_COUNTRIES_REQUEST,
+  FETCH_COUNTRIES_FAILURE,
+  FETCH_COUNTRY_SUCCESS,
+  SEARCHED_COUNTRY_LIST,
+} from "../constants";
+
 const initialState = {
   countriesData: [],
   error: null,
@@ -9,13 +17,13 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   const actionType = action.type;
   switch (actionType) {
-    case "FETCH_COUNTRIES_REQUEST":
+    case FETCH_COUNTRIES_REQUEST:
       return {
         ...state,
         loading: true,
       };
 
-    case "FETCH_COUNTRIES_SUCCESS":
+    case FETCH_COUNTRIES_SUCCESS:
       return {
         ...state,
         countriesData: action.payload.response,
@@ -23,34 +31,38 @@ const reducer = (state = initialState, action) => {
         loading: false,
       };
 
-    case "FETCH_COUNTRIES_FAILURE":
+    case FETCH_COUNTRIES_FAILURE:
       return {
         ...state,
         error: action.payload.error,
         loading: false,
       };
 
-    case "FETCH_COUNTRY_SUCCESS":
+    case FETCH_COUNTRY_SUCCESS:
       return {
         ...state,
         country: action.payload.response,
         loading: false,
       };
 
-    case "SEARCHED_COUNTRY_LIST":
-      const filteredCountry = state.countriesData.filter((country) =>
-        country.name.common.toLowerCase().includes(action.payload.toLowerCase()) || country.region.toLowerCase().includes(action.payload.toLowerCase())
+    case SEARCHED_COUNTRY_LIST:
+      const filteredCountry = state.countriesData.filter(
+        (country) =>
+          country.name.common
+            .toLowerCase()
+            .includes(action.payload.toLowerCase()) ||
+          country.region.toLowerCase().includes(action.payload.toLowerCase())
       );
       return {
         ...state,
         loading: false,
         filteredCountry,
       };
-      
+
     // case "SORT_COUNTRIES":
     //   const order = action.payload;
     //   const sortedCountry = [...state.countriesData];
-      
+
     //   const sortedCountries = sortedCountry.sort((a, b) => {
     //     if (a.name.common < b.name.common) {
     //       if (order === 'asc') {
@@ -72,7 +84,6 @@ const reducer = (state = initialState, action) => {
     //     ...state,
     //     filteredCountry: sortedCountries,
     //   };
-      
 
     default:
       return state;
