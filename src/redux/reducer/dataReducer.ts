@@ -5,8 +5,11 @@ import {
   FETCH_COUNTRY_SUCCESS,
   SEARCHED_COUNTRY_LIST,
 } from "../constants";
+import { ActionTypes } from '../reduxTypes';
 
-const initialState = {
+import { CountriesInitialState } from '../../types'
+
+const initialState: CountriesInitialState = {
   countriesData: [],
   error: null,
   loading: false,
@@ -14,7 +17,7 @@ const initialState = {
   filteredCountry: [],
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: ActionTypes) => {
   const actionType = action.type;
   switch (actionType) {
     case FETCH_COUNTRIES_REQUEST:
@@ -58,32 +61,6 @@ const reducer = (state = initialState, action) => {
         loading: false,
         filteredCountry,
       };
-
-    // case "SORT_COUNTRIES":
-    //   const order = action.payload;
-    //   const sortedCountry = [...state.countriesData];
-
-    //   const sortedCountries = sortedCountry.sort((a, b) => {
-    //     if (a.name.common < b.name.common) {
-    //       if (order === 'asc') {
-    //         return -1;
-    //       }
-    //       return 1;
-    //     }
-    //     if (a.name.common > b.name.common) {
-    //       if (order === 'asc') {
-    //         return 1;
-    //       }
-    //       return -1;
-    //     }
-    //     return 0;
-    //   });
-    //   console.log('sortedCountries: ', sortedCountries)
-    //   console.log('order: ', order);
-    //   return {
-    //     ...state,
-    //     filteredCountry: sortedCountries,
-    //   };
 
     default:
       return state;

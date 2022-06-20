@@ -7,7 +7,6 @@ import CountryPage from "./pages/CountryPage";
 import Footer from "./components/Footer";
 import FavoritePage from "./pages/FavoritePage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { red } from "@mui/material/colors";
 import Box from '@mui/material/Box'
 
 
@@ -17,7 +16,11 @@ function App() {
   const theme = createTheme({
     palette: {
       mode: mode,
-      primary: red,
+      primary: {
+        main: '#64732F',
+        light: '#CAD959',
+        dark: '#334018'
+      } ,
     },
   });
 
@@ -31,7 +34,7 @@ function App() {
           <Box sx={{ height: '100vh', backgroundColor: theme.palette.background.paper}}>
             <Routes>
               <Route path="/" element={<CountriesPage theme={theme}/>} />
-              <Route path="/country/:name" element={<CountryPage />} />
+              <Route path="/country/:name" element={<CountryPage theme={theme} />} />
               <Route path="/favorites" element={<FavoritePage theme={theme}/>} />
             </Routes>
           </Box>

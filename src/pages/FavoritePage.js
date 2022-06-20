@@ -31,15 +31,15 @@ export default function FavoritePage() {
         favoriteCountry.map((country) => {
           return (
             <Card
-              sx={{ display: "flex", margin: "1rem auto", maxWidth: "70vw" }}
+              sx={{ display: "flex-flex", margin: "1rem auto", maxWidth: "70vw" }}
             >
               <CardMedia
                 component="img"
-                sx={{ width: 151 }}
+                sx={{ width: 151, display: "flex" }}
                 image={country.flags.png}
-                alt="Live from space album cover"
-              />
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                alt={`${country.name.common}'s flags`}
+                              />
+              <Box sx={{ display: "inline-block", flexDirection: "column" }}>
                 <CardContent sx={{ flex: "1 0 auto" }}>
                   <Typography component="div" variant="h5">
                     {country.name.common}
@@ -52,7 +52,7 @@ export default function FavoritePage() {
                     {country.region}
                   </Typography>
                 </CardContent>
-                <Box sx={{ display: "flex", alignItems: "end", pl: 1, pb: 1 }}>
+                <Box sx={{ display: "block", alignItems: "center", margin: "auto 1.5rem" }}>
                   <IconButton
                     aria-label="delete"
                     onClick={() => handleRemoveFavorite(country)}

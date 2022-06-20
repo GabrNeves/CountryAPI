@@ -14,7 +14,7 @@ const initialState = {
           };
         return {
           ...state,
-          country: {...state.country},
+          country: {...state.country}, //is this used for something??
           favoriteCart: [...state.favoriteCart, favorite],
         };
       case REMOVE_FAVORITE: {

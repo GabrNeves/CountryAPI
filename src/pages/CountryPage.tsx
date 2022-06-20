@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchCountry } from "../redux/action";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import Card from "@mui/material/Card";
@@ -22,47 +23,50 @@ import LanguageIcon from "@mui/icons-material/Language";
 import BorderBottomIcon from "@mui/icons-material/BorderBottom";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import TranslateIcon from "@mui/icons-material/Translate";
-import { fetchCountry } from "../redux/action";
+import { AppState } from "../types";
+import { Theme } from '@mui/material'
+
+type themeProp = {
+  theme: Theme
+}
 
 
-
-
-export default function CountriesPage({ country }) {
+export default function CountriesPage({ theme }: themeProp) {
   const { name } = useParams();
 
-  const dispatch = useDispatch();
-  const countryData = useSelector((appState) => appState.dataReducer.country)
-  const error = useSelector((appState) => appState.dataReducer.error)
-  const loading = useSelector((appState) => appState.dataReducer.loading)
+  const dispatch = useDispatch<any>();
+  const { country: countryData, error, loading } = useSelector((appState: AppState) => appState.dataReducer)
 
   useEffect(() => {
-    dispatch(fetchCountry(name))
+    if (name) {
+      dispatch(fetchCountry(name))
+    }
   }, [dispatch, name])
 
-  const [open, setOpen] = React.useState(false);
-  const [open2, setOpen2] = React.useState(false);
-  const [open3, setOpen3] = React.useState(false);
-  const [open4, setOpen4] = React.useState(false);
-  const [open5, setOpen5] = React.useState(false);
+  const [openOtherNames, setOpenOtherNames] = React.useState(false);
+  const [openRegion, setOpenRegion] = React.useState(false);
+  const [openBorders, setOpenBorders] = React.useState(false);
+  const [openCurrencies, setOpenCurrencies] = React.useState(false);
+  const [openLanguages, setOpenLanguages] = React.useState(false);
 
-  const handleClick = () => {
-    setOpen(!open);
+  const handleClickOtherNames = () => {
+    setOpenOtherNames(!openOtherNames);
   };
 
-  const handleClick2 = () => {
-    setOpen2(!open2);
+  const handleClickRegion = () => {
+    setOpenRegion(!openRegion);
   };
 
-  const handleClick3 = () => {
-    setOpen3(!open3);
+  const handleClickBorders = () => {
+    setOpenBorders(!openBorders);
   };
 
-  const handleClick4 = () => {
-    setOpen4(!open4);
+  const handleClickCurrencies = () => {
+    setOpenCurrencies(!openCurrencies);
   };
 
-  const handleClick5 = () => {
-    setOpen5(!open5);
+  const handleClickLanguages = () => {
+    setOpenLanguages(!openLanguages);
   };
 
   if (error) return <div>Error!</div>;
@@ -75,7 +79,7 @@ export default function CountriesPage({ country }) {
     );
   return (
     <div>
-      <Typography variant='h2' sx={{margin:'4rem 0'}} >{name}</Typography>
+      <Typography variant='h2' sx={{margin:'0', padding: '4rem 0', color: theme.palette.text.primary}} >{name}</Typography>
       {countryData ? (
         countryData.map((country) => {
           return (
@@ -97,56 +101,56 @@ export default function CountriesPage({ country }) {
                     component="nav"
                     aria-labelledby="nested-list-subheader"
                   >
-                    <ListItemButton onClick={handleClick}>
+                    <ListItemButton onClick={handleClickOtherNames}>
                       <ListItemIcon>
                         <BadgeIcon />
                       </ListItemIcon>
                       <ListItemText primary="Other Names" />
-                      {open ? <ExpandLess /> : <ExpandMore />}
+                      {openOtherNames ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse in={openOtherNames} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemText primary={country.name.common} />
                         </ListItemButton>
                       </List>
                     </Collapse>
-                    <ListItemButton onClick={handleClick2}>
+                    <ListItemButton onClick={handleClickRegion}>
                       <ListItemIcon>
                         <LanguageIcon />
                       </ListItemIcon>
                       <ListItemText primary="Region" />
-                      {open2 ? <ExpandLess /> : <ExpandMore />}
+                      {openRegion ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={open2} timeout="auto" unmountOnExit>
+                    <Collapse in={openRegion} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemText primary={country.region} />
                         </ListItemButton>
                       </List>
                     </Collapse>
-                    <ListItemButton onClick={handleClick3}>
+                    <ListItemButton onClick={handleClickBorders}>
                       <ListItemIcon>
                         <BorderBottomIcon />
                       </ListItemIcon>
                       <ListItemText primary="Borders" />
-                      {open3 ? <ExpandLess /> : <ExpandMore />}
+                      {openBorders ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={open3} timeout="auto" unmountOnExit>
+                    <Collapse in={openBorders} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4, flexDirection: 'column' }}>
                           <ListItemText primary={country.borders ? country.borders : <>NO BORDERS</>}/>
                         </ListItemButton>
                       </List>
                     </Collapse>
-                    <ListItemButton onClick={handleClick4}>
+                    <ListItemButton onClick={handleClickCurrencies}>
                       <ListItemIcon>
                         <CurrencyExchangeIcon />
                       </ListItemIcon>
                       <ListItemText primary="Currencies" />
-                      {open4 ? <ExpandLess /> : <ExpandMore />}
+                      {openCurrencies ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={open4} timeout="auto" unmountOnExit>
+                    <Collapse in={openCurrencies} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemText
@@ -168,14 +172,14 @@ export default function CountriesPage({ country }) {
                         </ListItemButton>
                       </List>
                     </Collapse>
-                    <ListItemButton onClick={handleClick5}>
+                    <ListItemButton onClick={handleClickLanguages}>
                       <ListItemIcon>
                         <TranslateIcon />
                       </ListItemIcon>
                       <ListItemText primary="Languages" />
-                      {open5 ? <ExpandLess /> : <ExpandMore />}
+                      {openLanguages ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
-                    <Collapse in={open5} timeout="auto" unmountOnExit>
+                    <Collapse in={openLanguages} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemText
