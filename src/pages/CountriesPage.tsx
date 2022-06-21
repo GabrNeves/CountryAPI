@@ -24,8 +24,55 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
+import { AppState } from "../types";
 
-const columns = [
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+type Order = 'asc' | 'desc';
+
+function getComparator<Key extends keyof any>(
+  order: Order,
+  orderBy: Key,
+): (
+  a: { [key in Key]: number | string },
+  b: { [key in Key]: number | string },
+) => number {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+//IE11 support
+function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
+  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
+
+type Column = {
+  id: string,
+  label: string,
+  numeric?: boolean,
+  minWidth: number,
+  align?: 'center' | 'right' | 'left' | 'top' | 'bottom' | any,
+  format?: (value: number) => void;
+}
+
+const columns: readonly Column[] = [
   {
     id: "flag",
     label: "Flag",
@@ -41,7 +88,7 @@ const columns = [
     numeric: true,
     minWidth: 170,
     align: "right",
-    format: (value) => value.toLocaleString("en-US"),
+    format: (value: number) => value.toLocaleString("en-US"),
   },
   {
     id: "languages",
@@ -59,13 +106,21 @@ const columns = [
   },
 ];
 
-//sorting from material UI
+interface EnhancedTableProps {
+  numSelected: number;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Column) => void;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
+}
 
-function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
+function EnhancedTableHead(props: EnhancedTableProps) {
+  const { order, orderBy, onRequestSort } =
+    props;
+  const createSortHandler =
+    (property: keyof Column) => (event: React.MouseEvent<unknown>) => {
+      onRequestSort(event, property);
+    };
 
   return (
     <TableHead>
@@ -74,7 +129,6 @@ function EnhancedTableHead(props) {
           <TableCell
             key={column.id}
             align={column.align}
-            padding={column.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === column.id ? order : false}
             width = {column.minWidth}
           >
@@ -99,75 +153,43 @@ function EnhancedTableHead(props) {
   );
 }
 
-EnhancedTableHead.propTypes = {
-  onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-//IE11 support
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
 export default function CountriesPage() {
   const dispatch = useDispatch();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("name");
+  const [order, setOrder] = React.useState<Order>('asc');
+  const [orderBy, setOrderBy] = React.useState<keyof Column>('name');
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+  const handleRequestSort = (
+    event: React.MouseEvent<unknown>,
+    property: keyof Column,
+  ) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
   const theme = useTheme();
 
-  const countryData = useSelector(
-    (appState) => appState.dataReducer.filteredCountry
-  );
+  // const countryData = useSelector(
+  //   (appState) => appState.dataReducer.filteredCountry
+  // );
+  const {filteredCountry, loading, error} = useSelector((appState: AppState) => appState.dataReducer)
 
-  const loading = useSelector((appState) => appState.dataReducer.loading);
-  const error = useSelector((appState) => appState.dataReducer.error);
+  // const loading = useSelector((appState) => appState.dataReducer.loading);
+  // const error = useSelector((appState) => appState.dataReducer.error);
 
   const favoriteCart = useSelector(
-    (appState) => appState.favoriteReducer.favoriteCart
+    (appState: AppState) => appState.favoriteReducer.favoriteCart
   );
 
   useEffect(() => {
@@ -226,7 +248,7 @@ export default function CountriesPage() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={countryData.length}
+              rowCount={filteredCountry.length}
             />
             {/* <CountryTableHead columns={columns}/> */}
             <CountryTableBody
@@ -235,7 +257,7 @@ export default function CountriesPage() {
               loading={loading}
               page={page}
               rowsPerPage={rowsPerPage}
-              countryData={countryData}
+              countryData={filteredCountry}
               stableSort={stableSort}
               getComparator={getComparator}
               order={order}
@@ -246,7 +268,7 @@ export default function CountriesPage() {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={countryData ? countryData.length : 0}
+          count={filteredCountry ? filteredCountry.length : 0}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

@@ -38,7 +38,7 @@ function App() {
               <Route path="/favorites" element={<FavoritePage theme={theme}/>} />
             </Routes>
           </Box>
-          <Footer />
+          <Footer theme={theme}/>
         </ThemeProvider>
     </div>
   );
