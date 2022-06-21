@@ -32,11 +32,11 @@ export const searchCountry = (value: string): SearchCountry => {
   return { type: SEARCHED_COUNTRY_LIST, payload: value };
 };
 
-export const addFavorite = (favorite: Country[]): AddFavorite => {
+export const addFavorite = (favorite: Country): AddFavorite => {
   return { type: ADD_FAVORITE, payload: { favorite } };
 };
 
-export const removeFavorite = (favorite: Country[]):RemoveFavorite => {
+export const removeFavorite = (favorite: Country):RemoveFavorite => {
   return { type: REMOVE_FAVORITE, payload: { favorite } };
 };
 

@@ -1,9 +1,6 @@
 export type AppState = {
   dataReducer: CountriesInitialState,
-  favoriteReducer: {
-    favoriteCart: Country[];
-    // country: Country
-  };
+  favoriteReducer: FavoriteCartInitialState;
 };
 
 export type CountriesInitialState = {
@@ -13,6 +10,11 @@ export type CountriesInitialState = {
   filteredCountry: Country[];
   loading: boolean;
 };
+
+export type FavoriteCartInitialState = {
+  favoriteCart: Country[];
+  country: Country[];
+}
 
 export type Country = {
   name: {

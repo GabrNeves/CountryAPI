@@ -24,7 +24,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
-import { AppState } from "../types";
+import { AppState, Country } from "../types";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -107,8 +107,7 @@ const columns: readonly Column[] = [
 ];
 
 interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Column) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
   order: Order;
   orderBy: string;
   rowCount: number;
@@ -118,7 +117,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   const { order, orderBy, onRequestSort } =
     props;
   const createSortHandler =
-    (property: keyof Column) => (event: React.MouseEvent<unknown>) => {
+    (property: string) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -154,15 +153,15 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 export default function CountriesPage() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Column>('name');
+  const [orderBy, setOrderBy] = React.useState<string>('name');
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Column,
+    property: string,
   ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -180,13 +179,7 @@ export default function CountriesPage() {
 
   const theme = useTheme();
 
-  // const countryData = useSelector(
-  //   (appState) => appState.dataReducer.filteredCountry
-  // );
   const {filteredCountry, loading, error} = useSelector((appState: AppState) => appState.dataReducer)
-
-  // const loading = useSelector((appState) => appState.dataReducer.loading);
-  // const error = useSelector((appState) => appState.dataReducer.error);
 
   const favoriteCart = useSelector(
     (appState: AppState) => appState.favoriteReducer.favoriteCart

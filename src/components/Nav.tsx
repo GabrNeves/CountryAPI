@@ -17,6 +17,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import PublicIcon from '@mui/icons-material/Public';
 import { AppState } from "../types";
 
 
@@ -87,7 +88,7 @@ export default function PrimarySearchAppBar({ theme, setModeHandler }: SearchBar
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            <Link to='/' className="logo">LOGO</Link>
+            <Link to='/' className="logo"><PublicIcon /></Link>
           </Typography>
           <Search>
             <SearchIconWrapper>

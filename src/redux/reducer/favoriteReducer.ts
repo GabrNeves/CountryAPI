@@ -1,15 +1,19 @@
+import { Country, FavoriteCartInitialState } from '../../types';
 import {ADD_FAVORITE, REMOVE_FAVORITE} from '../constants'
+import { ActionTypes } from '../reduxTypes';
 
-const initialState = {
+const initialState: FavoriteCartInitialState = {
     favoriteCart: [],
+    country: []
   };
   
-  const reducer = (state = initialState, action) => {
+  const reducer = (state = initialState, action: ActionTypes) => {
     const actionType = action.type;
     switch (actionType) {
       case ADD_FAVORITE:
           const favorite = action.payload.favorite
-          if (state.favoriteCart.find((p) => p.name.common === favorite.name.common)) {
+          console.log(favorite)
+          if (state.favoriteCart.find((p: Country) => p.name.common === favorite.name.common)) {
               return state
           };
         return {

@@ -12,15 +12,16 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from '@mui/material/Button';
+import { AppState, Country } from "../types";
 
 export default function FavoritePage() {
   const favoriteCountry = useSelector(
-    (appState) => appState.favoriteReducer.favoriteCart
+    (appState: AppState) => appState.favoriteReducer.favoriteCart
   );
   const theme = useTheme();
 
   const dispatch = useDispatch();
-  const handleRemoveFavorite = (favorite) => {
+  const handleRemoveFavorite = (favorite: Country) => {
     dispatch(removeFavorite(favorite));
   };
 

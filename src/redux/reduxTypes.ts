@@ -44,11 +44,11 @@ export type SearchCountry = {
 
 export type AddFavorite = {
   type: typeof ADD_FAVORITE,
-  payload: { favorite: Country[] },
+  payload: { favorite: Country },
   
 }
 
 export type RemoveFavorite = {
   type: typeof REMOVE_FAVORITE,
-  payload: { favorite: Country[] }
+  payload: { favorite: Country }
 }
