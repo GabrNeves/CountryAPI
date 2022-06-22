@@ -24,14 +24,12 @@ import BorderBottomIcon from "@mui/icons-material/BorderBottom";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import TranslateIcon from "@mui/icons-material/Translate";
 import { AppState } from "../types";
-import { Theme } from '@mui/material'
-
-type themeProp = {
-  theme: Theme
-}
+import { useTheme } from "@mui/material/styles";
 
 
-export default function CountriesPage({ theme }: themeProp) {
+
+export default function CountriesPage() {
+  const theme = useTheme();
   const { name } = useParams();
 
   const dispatch = useDispatch<any>();

@@ -21,6 +21,8 @@ export type Country = {
     common: string;
   };
   region: string;
+  population: number;
+  capital: string;
   borders: string[];
   cca3: string;
   currencies: {
@@ -35,3 +37,13 @@ export type Country = {
     png: string;
   };
 };
+
+export type Column = {
+  id: string,
+  label: string,
+  numeric?: boolean,
+  minWidth: number,
+  align?: 'center' | 'right' | 'left' | 'top' | 'bottom' | any,
+  format?: (value: number) => void;
+}
+

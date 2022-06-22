@@ -4,10 +4,11 @@ import {
   compose,
 } from "redux";
 import thunk from "redux-thunk";
+import { AppState } from "../types";
 
 import createRootReducer from "./reducer/index";
 
-const initState = {
+const initState: AppState = {
   dataReducer: {
     countriesData: [],
     error: null,
@@ -17,6 +18,7 @@ const initState = {
   },
   favoriteReducer: {
     favoriteCart: [],
+    country: []
   },
 };
 
@@ -25,13 +27,14 @@ export default function renderStore(initialState = initState) {
   let composeEnhancers = compose;
 
   if (process.env.NODE_ENV === "development") {
-    if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-      composeEnhancers = window.__REDUX__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+    if ((window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
+      composeEnhancers = (window as any).__REDUX__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
     }
     composeEnhancers = compose;
   }
 
   let favoriteObj = localStorage.getItem("favoriteItem");
+  console.log('favoriteObj:', favoriteObj)
 
   let finalState;
   if (favoriteObj) {
@@ -56,20 +59,11 @@ export default function renderStore(initialState = initState) {
     );
   });
 
-  if (module.hot) {
-    module.hot.accept("./reducer", () => {
+  if ((module as any).hot) {
+    (module as any).hot.accept("./reducer", () => {
       const nextReducer = require("./reducer").default;
       store.replaceReducer(nextReducer);
     });
   }
   return store;
 }
-
-// const middlewares = [thunk];
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-// const store = createStore(
-//   createRootReducer(),
-//   composeEnhancers(applyMiddleware(...middlewares))
-// );
-
-// export default store;

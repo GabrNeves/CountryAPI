@@ -7,8 +7,8 @@ import { useTheme } from "@mui/material/styles";
 export default function Footer() {
   const theme = useTheme();
   return (
-    <Box sx={{background: theme.palette.primary.main, height: '6rem'}}>
-      <Typography >some</Typography>
+    <Box >
+      <Typography sx={{color: theme.palette.text.primary}}>some</Typography>
     </Box>
   )
 }

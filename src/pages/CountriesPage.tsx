@@ -2,29 +2,26 @@ import * as React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountries } from "../redux/action";
-// import CountryTableHead from "../tableComponents/CountryTableHead";
 import CountryTableBody from "../tableComponents/CountryTableBody";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import { AppState } from "../types";
 
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
-
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
+import Box from "@mui/material/Box";
 import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import CircularProgress from "@mui/material/CircularProgress";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
-import { AppState, Country } from "../types";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {

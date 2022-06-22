@@ -11,6 +11,9 @@ import { addFavorite, removeFavorite } from "../redux/action";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import IconButton from "@mui/material/IconButton";
+import { AppState, Column, Country } from "../types";
+
+
 
 export default function CountryTableBody({
   columns,
@@ -23,16 +26,16 @@ export default function CountryTableBody({
   getComparator,
   order,
   orderBy,
-}) {
+}: any) {
   const dispatch = useDispatch();
-  const handleAddFavorite = (favorite) => {
+  const handleAddFavorite = (favorite: Country) => {
     dispatch(addFavorite(favorite));
   };
-  const handleRemoveFavorite = (favorite) => {
+  const handleRemoveFavorite = (favorite: Country) => {
     dispatch(removeFavorite(favorite));
   };
   const favoriteCart = useSelector(
-    (appState) => appState.favoriteReducer.favoriteCart
+    (appState: AppState) => appState.favoriteReducer.favoriteCart
   );
   
   
@@ -50,15 +53,15 @@ export default function CountryTableBody({
       {countryData &&
         stableSort(countryData, getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((row) => {
+        .map((row: Country) => {
           const favCheck = favoriteCart.some((item) => {
             return row.name.common === item.name.common
           })
           
             return (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.ccn3}>
-                {columns.map((column) => {
-                  let value;
+              <TableRow hover role="checkbox" tabIndex={-1} key={row.cca3}>
+                {columns.map((column: Column) => {
+                  let value: any;
                   switch (column.id) {
                     case "name":
                       value = row.name.common;
@@ -93,12 +96,9 @@ export default function CountryTableBody({
                       ) : column.id === "flag" ? (
                         <Link to={`/country/${row.name.common}`}>
                           <Avatar
-                            heigth="40px"
-                            width="40px"
-                            justifycontent="center"
                             src={value}
                             alt="country flag"
-                            sx={{ margin: "auto" }}
+                            sx={{ margin: "auto", heigth:"40px", width:"40px", justifyContent: 'center' }}
                           />
                         </Link>
                       ) : (

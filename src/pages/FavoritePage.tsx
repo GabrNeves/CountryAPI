@@ -12,6 +12,9 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Stack from '@mui/material/Stack';
 import { AppState, Country } from "../types";
 
 export default function FavoritePage() {
@@ -28,7 +31,7 @@ export default function FavoritePage() {
   return (
     <div>
       <Typography variant='h3' sx={{padding: '4rem', color:theme.palette.text.primary}}>Here's your selected favorite countries</Typography>
-      {favoriteCountry ? (
+      {favoriteCountry.length !== 0 ? (
         favoriteCountry.map((country) => {
           return (
             <Card
@@ -70,7 +73,12 @@ export default function FavoritePage() {
           );
         })
       ) : (
-        <h2>There is no data yet.</h2>
+        <Stack sx={{ width: 400, margin: '2rem auto' }} spacing={2}>
+          <Alert severity="warning">
+            <AlertTitle>Warning</AlertTitle>
+            You have selected <strong>any item</strong> to your favorite list!
+          </Alert>
+      </Stack>
       )}
       <Link to="/"><Button variant="contained">Back</Button></Link>
     </div>

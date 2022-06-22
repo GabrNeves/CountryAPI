@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { searchCountry } from '../redux/action'
 
-import { Theme } from '@mui/material'
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -19,6 +18,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import PublicIcon from '@mui/icons-material/Public';
 import { AppState } from "../types";
+import { useTheme } from "@mui/material/styles";
 
 
 const Search = styled("div")(({ theme }) => ({
@@ -62,11 +62,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 type SearchBarProps = {
-  theme: Theme,
   setModeHandler: () => void
 }
 
-export default function PrimarySearchAppBar({ theme, setModeHandler }: SearchBarProps) {
+export default function PrimarySearchAppBar({ setModeHandler }: SearchBarProps) {
+  const theme = useTheme();
   //handle favorite cart
   const favoriteCart = useSelector((appState: AppState) => appState.favoriteReducer.favoriteCart);
 
