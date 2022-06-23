@@ -20,9 +20,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useTheme } from "@mui/material/styles";
 
-function descendingComparator(a: Country, b: Country, orderBy: keyof Country) {
-
-  
+function descendingComparator(a: any, b: any, orderBy: any) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -34,11 +32,17 @@ function descendingComparator(a: Country, b: Country, orderBy: keyof Country) {
 
 function getComparator(
   order: Order,
-  orderBy: keyof Country,
+  orderBy: any,
 )  {
   return order === 'desc'
-    ? (a: Country, b: Country) => descendingComparator(a, b, orderBy)
-    : (a: Country, b: Country) => -descendingComparator(a, b, orderBy);
+    ? (a: any, b: any) => {
+      const right = {...a, name: a.name.common}
+      const left = {...b, name: b.name.common}
+      descendingComparator(right, left, orderBy)}
+    : (a: any, b: any) => {
+      const right = {...a, name: a.name.common}
+      const left = {...b, name: b.name.common}
+      -descendingComparator(right, left, orderBy)};
 }
 
 //IE11 support

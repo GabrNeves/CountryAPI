@@ -10,7 +10,7 @@ import {
   import { Country } from '../types';
 
 
-export type ActionTypes = AddFavorite | FetchCountriesFailure | FetchCountriesRequest | FetchCountriesSuccess | FetchCountrySuccess | RemoveFavorite | SearchCountry 
+export type ActionTypes = AddFavorite | FetchCountriesFailure | FetchCountriesRequest | FetchCountriesSuccess | FetchCountrySuccess | RemoveFavorite | SearchCountry
 
 export type FetchCountriesRequest = {
   type: typeof FETCH_COUNTRIES_REQUEST
