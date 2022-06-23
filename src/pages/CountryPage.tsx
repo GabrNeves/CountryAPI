@@ -81,7 +81,7 @@ export default function CountriesPage() {
       {countryData ? (
         countryData.map((country) => {
           return (
-            <div>
+            <div key={country.cca3 + country.cca3}>
               <Card sx={{ maxWidth: 345, margin: "auto" }}>
                 <CardMedia
                   component="img"

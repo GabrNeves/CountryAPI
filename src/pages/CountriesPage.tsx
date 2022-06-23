@@ -2,28 +2,27 @@ import * as React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountries } from "../redux/action";
-import CountryTableBody from "../tableComponents/CountryTableBody";
 import { Link } from "react-router-dom";
-import { AppState } from "../types";
+import CountryTableBody from "../tableComponents/CountryTableBody";
+import EnhancedTableHead from '../tableComponents/CountryTableHead'
+import { AppState, Country, Order } from "../types";
+import { columns } from "./columns";
 
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
 import Box from "@mui/material/Box";
 import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
-import TableSortLabel from "@mui/material/TableSortLabel";
 import CircularProgress from "@mui/material/CircularProgress";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useTheme } from "@mui/material/styles";
-import { visuallyHidden } from "@mui/utils";
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+function descendingComparator(a: Country, b: Country, orderBy: keyof Country) {
+
+  
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -33,18 +32,13 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0;
 }
 
-type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof any>(
+function getComparator(
   order: Order,
-  orderBy: Key,
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
+  orderBy: keyof Country,
+)  {
   return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
+    ? (a: Country, b: Country) => descendingComparator(a, b, orderBy)
+    : (a: Country, b: Country) => -descendingComparator(a, b, orderBy);
 }
 
 //IE11 support
@@ -58,95 +52,6 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
     return a[1] - b[1];
   });
   return stabilizedThis.map((el) => el[0]);
-}
-
-type Column = {
-  id: string,
-  label: string,
-  numeric?: boolean,
-  minWidth: number,
-  align?: 'center' | 'right' | 'left' | 'top' | 'bottom' | any,
-  format?: (value: number) => void;
-}
-
-const columns: readonly Column[] = [
-  {
-    id: "flag",
-    label: "Flag",
-    numeric: false,
-    minWidth: 170,
-    align: "center",
-  },
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "region", label: "Region", minWidth: 100 },
-  {
-    id: "population",
-    label: "Population",
-    numeric: true,
-    minWidth: 170,
-    align: "right",
-    format: (value: number) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "languages",
-    label: "Languages",
-    numeric: false,
-    minWidth: 170,
-    align: "right",
-  },
-  {
-    id: "capital",
-    label: "capital",
-    numeric: false,
-    minWidth: 170,
-    align: "right",
-  },
-];
-
-interface EnhancedTableProps {
-  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { order, orderBy, onRequestSort } =
-    props;
-  const createSortHandler =
-    (property: string) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {columns.map((column) => (
-          <TableCell
-            key={column.id}
-            align={column.align}
-            sortDirection={orderBy === column.id ? order : false}
-            width = {column.minWidth}
-          >
-            <TableSortLabel
-              active={orderBy === column.id}
-              direction={orderBy === column.id ? order : "asc"}
-              onClick={createSortHandler(column.id)}
-              
-            >
-              {column.label}
-              {orderBy === column.id ? (
-                <Box component="span" sx={visuallyHidden} >
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-        <TableCell width = "170"> </TableCell>
-      </TableRow>
-    </TableHead>
-  );
 }
 
 export default function CountriesPage() {
@@ -240,7 +145,6 @@ export default function CountriesPage() {
               onRequestSort={handleRequestSort}
               rowCount={filteredCountry.length}
             />
-            {/* <CountryTableHead columns={columns}/> */}
             <CountryTableBody
               columns={columns}
               error={error}

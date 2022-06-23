@@ -47,3 +47,11 @@ export type Column = {
   format?: (value: number) => void;
 }
 
+export type Order = 'asc' | 'desc';
+
+export interface EnhancedTableProps {
+  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
+}

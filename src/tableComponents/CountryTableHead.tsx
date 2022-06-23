@@ -5,33 +5,41 @@ import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { visuallyHidden } from '@mui/utils';
 import Box from "@mui/material/Box";
+import { EnhancedTableProps } from "../types";
+import { columns } from "../pages/columns";
 
-export default function CountryTableHead({ columns, orderBy, order, createSortHandler }) {
+export default function EnhancedTableHead({order, orderBy, onRequestSort}: EnhancedTableProps) {
+  const createSortHandler =
+    (property: string) => (event: React.MouseEvent<unknown>) => {
+      onRequestSort(event, property);
+    };
+
   return (
     <TableHead>
       <TableRow>
-        {columns.map((column) => (
+        {columns?.map((column) => (
           <TableCell
             key={column.id}
             align={column.align}
-            padding={column.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === column.id ? order : false}
+            width = {column.minWidth}
           >
             <TableSortLabel
               active={orderBy === column.id}
-              direction={orderBy === column.id ? order : 'asc'}
+              direction={orderBy === column.id ? order : "asc"}
               onClick={createSortHandler(column.id)}
+              
             >
               {column.label}
               {orderBy === column.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                <Box component="span" sx={visuallyHidden} >
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </Box>
               ) : null}
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell> </TableCell>
+        <TableCell width = "170"> </TableCell>
       </TableRow>
     </TableHead>
   );
