@@ -5,7 +5,7 @@ import { fetchCountries } from "../redux/action";
 import { Link } from "react-router-dom";
 import CountryTableBody from "../tableComponents/CountryTableBody";
 import EnhancedTableHead from '../tableComponents/CountryTableHead'
-import { AppState, Country, Order } from "../types";
+import { AppState, CountryOrder, Order, Country } from "../types";
 import { columns } from "./columns";
 
 import IconButton from "@mui/material/IconButton";
@@ -20,7 +20,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useTheme } from "@mui/material/styles";
 
-function descendingComparator(a: any, b: any, orderBy: any) {
+function descendingComparator(a: CountryOrder, b: CountryOrder, orderBy: keyof CountryOrder) {
+  console.log(Object.keys(a[orderBy])[0])
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -35,14 +36,14 @@ function getComparator(
   orderBy: any,
 )  {
   return order === 'desc'
-    ? (a: any, b: any) => {
-      const right = {...a, name: a.name.common}
-      const left = {...b, name: b.name.common}
-      descendingComparator(right, left, orderBy)}
+    ? (a: Country, b: Country) => {
+      const right: CountryOrder = {...a, name: a.name.common}
+      const left: CountryOrder = {...b, name: b.name.common}
+      return descendingComparator(right, left, orderBy)}
     : (a: any, b: any) => {
-      const right = {...a, name: a.name.common}
-      const left = {...b, name: b.name.common}
-      -descendingComparator(right, left, orderBy)};
+      const right: CountryOrder = {...a, name: a.name.common}
+      const left: CountryOrder = {...b, name: b.name.common}
+      return -descendingComparator(right, left, orderBy)};
 }
 
 //IE11 support
@@ -104,7 +105,7 @@ export default function CountriesPage() {
       />
     );
   return (
-    <div style={{ paddingTop: "5rem" }}>
+    <div style={{ paddingTop: "5rem", paddingBottom: "5rem" }}>
       <Box
         sx={{
           display: { xs: "flex", sm: "none" },

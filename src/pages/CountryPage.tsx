@@ -204,7 +204,7 @@ export default function CountriesPage() {
                 <CardActions ></CardActions>
               </Card>
               <Link to="/">
-                <Button variant="contained" sx={{ marginTop: "2rem" }}>
+                <Button variant="contained" sx={{ marginTop: "2rem", marginBottom: '4rem' }}>
                   Back
                 </Button>
               </Link>

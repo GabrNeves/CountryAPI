@@ -8,27 +8,32 @@ import Footer from "./components/Footer";
 import FavoritePage from "./pages/FavoritePage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import { deepPurple } from "@mui/material/colors";
 
 function App() {
   const [mode, setMode]:any = useState("light");
 
-
   const theme = createTheme({
     palette: {
       mode: mode,
+      primary: {
+        main: deepPurple[500],
+      },
+      text: {
+        secondary: 'white',
+      },
     },
   });
 
-  const setModeHandler = () =>
+  const setModeHandler = () => 
     mode === "light" ? setMode("dark") : setMode("light");
-
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <Nav setModeHandler={setModeHandler} />
         <Box
           sx={{
-            height: "100vh",
+            minHeight: "calc(~ '100vh - 64px')",
             backgroundColor: theme.palette.background.paper,
           }}
         >

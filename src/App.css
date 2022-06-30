@@ -37,3 +37,14 @@
     transform: rotate(360deg);
   }
 }
+
+.social-media {
+  display: flex;
+  gap: 2rem;
+  list-style-type: none;
+  justify-content: center;
+}
+
+.footer {
+  padding: 2rem;
+}

@@ -38,6 +38,26 @@ export type Country = {
   };
 };
 
+export type CountryOrder = {
+  name: string;
+  region: string;
+  population: number;
+  capital: string;
+  borders: string[];
+  cca3: string;
+  currencies: {
+    [key: string]: {
+      name: string;
+    };
+  };
+  languages: {
+    [key: string]: string;
+  };
+  flags: {
+    png: string;
+  };
+};
+
 export type Column = {
   id: string,
   label: string,
